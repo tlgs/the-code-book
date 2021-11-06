@@ -1,4 +1,4 @@
-from codebook.substitution import caesar, generic, keyphrase
+from codebook.substitution import caesar, generic, keyphrase, vigenere
 
 
 def test_caesar():
@@ -14,3 +14,10 @@ def test_generic():
 
 def test_keyphrase():
     assert keyphrase("et tu, brute?", key="JULIUS CAESAR") == "SH HK, UFKHS?"
+
+
+def test_vigenere():
+    assert (
+        vigenere("divert troops to east ridge", key="WHITE")
+        == "ZPDXVP AZHSLZ BH IWZB KMZNM"
+    )

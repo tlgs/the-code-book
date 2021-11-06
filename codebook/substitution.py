@@ -1,3 +1,9 @@
+"""Criptography substitution primitives
+
+At this time, most functions assume the plaintext is entirely in lowercase and that
+both the ciphertext and key are uppercase.
+"""
+import itertools
 import string
 
 
@@ -21,7 +27,7 @@ def keyphrase(message, key):
     """Generic substitution using a keyphrase; page 13"""
     seen = set()
     squeezed = []
-    for c in filter(str.isalpha, key.upper()):
+    for c in filter(str.isalpha, key):
         if c not in seen:
             seen.add(c)
             squeezed.append(c)
@@ -30,3 +36,19 @@ def keyphrase(message, key):
     remaining = [c for c in _shifted_alphabet(start + 1) if c not in seen]
 
     return generic(message, "".join(squeezed + remaining))
+
+
+def vigenere(message, key):
+    """Vigenère cipher; page 48"""
+    cycled_cipher_alphabet = itertools.cycle(
+        [_shifted_alphabet(ord(c) - 65) for c in key]
+    )
+    ciphertext = []
+    for c in message:
+        if c.isalpha():
+            m = next(cycled_cipher_alphabet)
+            ciphertext.append(m[ord(c) - 97])
+        else:
+            ciphertext.append(c)
+
+    return "".join(ciphertext)

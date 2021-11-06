@@ -1,13 +1,13 @@
-from codebook.substitution import caesar, general, keyphrase
+from codebook.substitution import caesar, generic, keyphrase
 
 
 def test_caesar():
     assert caesar("veni, vidi, vici", shift=3) == "YHQL, YLGL, YLFL"
 
 
-def test_general():
+def test_generic():
     assert (
-        general("et tu, brute?", cipher_alphabet="JLPAWIQBCTRZYDSKEGFXHUONVM")
+        generic("et tu, brute?", cipher_alphabet="JLPAWIQBCTRZYDSKEGFXHUONVM")
         == "WX XH, LGHXW?"
     )
 

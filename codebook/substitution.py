@@ -41,8 +41,9 @@ def keyphrase(message, key):
 def vigenere(message, key):
     """Vigenère cipher; page 48"""
     cycled_cipher_alphabet = itertools.cycle(
-        [_shifted_alphabet(ord(c) - 65) for c in key]
+        [_shifted_alphabet(ord(c) - 65) for c in key if c.isalpha()]
     )
+
     ciphertext = []
     for c in message:
         if c.isalpha():

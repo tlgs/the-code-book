@@ -1,29 +1,30 @@
-"""Criptography substitution primitives
-
-At this time, most functions assume the plaintext is entirely in lowercase and that
-both the ciphertext and key are uppercase.
-"""
+"""Cryptography substitution primitives"""
 import itertools
 import string
+
+from codebook.utils import validate
 
 
 def _shifted_alphabet(n):
     return (string.ascii_uppercase * 2)[n : n + 26]
 
 
-def caesar(message, shift):
+@validate
+def caesar(plaintext, shift):
     """Caesar cipher; page 10"""
-    return generic(message, _shifted_alphabet(shift % 26))
+    return generic(plaintext, _shifted_alphabet(shift % 26))
 
 
-def generic(message, cipher_alphabet):
+@validate
+def generic(plaintext, cipher_alphabet):
     """Generic substitution cipher; page 12"""
     mapping = str.maketrans(dict(zip(string.ascii_lowercase, cipher_alphabet)))
 
-    return message.translate(mapping)
+    return plaintext.translate(mapping)
 
 
-def keyphrase(message, key):
+@validate
+def keyphrase(plaintext, key):
     """Generic substitution using a keyphrase; page 13"""
     seen = set()
     squeezed = []
@@ -35,21 +36,19 @@ def keyphrase(message, key):
     start = ord(squeezed[-1]) - 65
     remaining = [c for c in _shifted_alphabet(start + 1) if c not in seen]
 
-    return generic(message, "".join(squeezed + remaining))
+    return generic(plaintext, "".join(squeezed + remaining))
 
 
-def vigenere(message, key):
+@validate
+def vigenere(plaintext, key):
     """Vigenère cipher; page 48"""
     cycled_cipher_alphabet = itertools.cycle(
-        [_shifted_alphabet(ord(c) - 65) for c in key if c.isalpha()]
+        _shifted_alphabet(ord(c) - 65) for c in key if c.isalpha()
     )
 
-    ciphertext = []
-    for c in message:
-        if c.isalpha():
-            m = next(cycled_cipher_alphabet)
-            ciphertext.append(m[ord(c) - 97])
-        else:
-            ciphertext.append(c)
+    ciphertext = [
+        next(cycled_cipher_alphabet)[ord(c) - 97] if c.isalpha() else c
+        for c in plaintext
+    ]
 
     return "".join(ciphertext)

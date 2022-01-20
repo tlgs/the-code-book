@@ -5,17 +5,17 @@ import string
 from codebook.utils import validate_cipher_alphabet, validate_key, validate_plaintext
 
 
-def _shifted_alphabet(n):
+def _shifted_alphabet(n: int) -> str:
     return (string.ascii_uppercase * 2)[n : n + 26]
 
 
-def caesar(plaintext, shift):
+def caesar(plaintext: str, shift: int) -> str:
     """Caesar cipher; page 10"""
     plaintext = validate_plaintext(plaintext)
     return generic(plaintext, _shifted_alphabet(shift % 26))
 
 
-def generic(plaintext, cipher_alphabet):
+def generic(plaintext: str, cipher_alphabet: str) -> str:
     """Generic substitution cipher; page 12"""
     plaintext = validate_plaintext(plaintext)
     cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
@@ -25,7 +25,7 @@ def generic(plaintext, cipher_alphabet):
     return plaintext.translate(mapping)
 
 
-def keyphrase(plaintext, key):
+def keyphrase(plaintext: str, key: str) -> str:
     """Generic substitution using a keyphrase; page 13"""
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)
@@ -43,7 +43,7 @@ def keyphrase(plaintext, key):
     return generic(plaintext, "".join(squeezed + remaining))
 
 
-def vigenere(plaintext, key):
+def vigenere(plaintext: str, key: str) -> str:
     """Vigenère cipher; page 48"""
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)

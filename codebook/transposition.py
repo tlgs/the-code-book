@@ -3,7 +3,7 @@ import math
 from codebook.utils import validate_plaintext
 
 
-def rail_fence(plaintext, rails=2):
+def rail_fence(plaintext: str, rails: int = 2) -> str:
     """Rail Fence cipher; page 8"""
     plaintext = validate_plaintext(plaintext)
 
@@ -12,7 +12,7 @@ def rail_fence(plaintext, rails=2):
     return "".join(["".join(filtered[i::rails]) for i in range(rails)])
 
 
-def scytale(plaintext, diameter):
+def scytale(plaintext: str, diameter: int) -> str:
     """Scytale cipher; page 8"""
     plaintext = validate_plaintext(plaintext)
 

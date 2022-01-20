@@ -1,31 +1,24 @@
-import functools
-import inspect
 import string
 
 
-def validate(func):
-    sig = inspect.signature(func)
+def validate_plaintext(plaintext):
+    if not plaintext.islower():
+        raise ValueError("Plaintext should be lowercase.")
 
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        bound = sig.bind(*args, **kwargs)
+    return plaintext
 
-        if (
-            "plaintext" in bound.arguments
-            and not bound.arguments["plaintext"].islower()
-        ):
-            raise ValueError("Plaintext should be lowercase.")
 
-        elif "key" in bound.arguments and not bound.arguments["key"].isupper():
-            raise ValueError("Key should be uppercase.")
+def validate_key(key):
+    if not key.isupper():
+        raise ValueError("Key should be uppercase.")
 
-        elif "cipher_alphabet" in bound.arguments and not set(
-            bound.arguments["cipher_alphabet"]
-        ) == set(string.ascii_uppercase):
-            raise ValueError(
-                "Cipher alphabet should be uppercase and contain all 26 letters."
-            )
+    return key
 
-        return func(*args, **kwargs)
 
-    return wrapper
+def validate_cipher_alphabet(cipher_alphabet):
+    if not set(cipher_alphabet) == set(string.ascii_uppercase):
+        raise ValueError(
+            "Cipher alphabet should be uppercase and contain all 26 letters."
+        )
+
+    return cipher_alphabet

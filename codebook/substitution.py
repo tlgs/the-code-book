@@ -2,30 +2,34 @@
 import itertools
 import string
 
-from codebook.utils import validate
+from codebook.utils import validate_cipher_alphabet, validate_key, validate_plaintext
 
 
 def _shifted_alphabet(n):
     return (string.ascii_uppercase * 2)[n : n + 26]
 
 
-@validate
 def caesar(plaintext, shift):
     """Caesar cipher; page 10"""
+    plaintext = validate_plaintext(plaintext)
     return generic(plaintext, _shifted_alphabet(shift % 26))
 
 
-@validate
 def generic(plaintext, cipher_alphabet):
     """Generic substitution cipher; page 12"""
+    plaintext = validate_plaintext(plaintext)
+    cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
+
     mapping = str.maketrans(dict(zip(string.ascii_lowercase, cipher_alphabet)))
 
     return plaintext.translate(mapping)
 
 
-@validate
 def keyphrase(plaintext, key):
     """Generic substitution using a keyphrase; page 13"""
+    plaintext = validate_plaintext(plaintext)
+    key = validate_key(key)
+
     seen = set()
     squeezed = []
     for c in filter(str.isalpha, key):
@@ -39,9 +43,11 @@ def keyphrase(plaintext, key):
     return generic(plaintext, "".join(squeezed + remaining))
 
 
-@validate
 def vigenere(plaintext, key):
     """Vigenère cipher; page 48"""
+    plaintext = validate_plaintext(plaintext)
+    key = validate_key(key)
+
     cycled_cipher_alphabet = itertools.cycle(
         _shifted_alphabet(ord(c) - 65) for c in key if c.isalpha()
     )

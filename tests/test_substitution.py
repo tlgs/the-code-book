@@ -1,4 +1,4 @@
-from codebook.substitution import caesar, generic, keyphrase, vigenere
+from codebook.substitution import caesar, generic, keyphrase, playfair, vigenere
 
 
 def test_caesar():
@@ -20,4 +20,11 @@ def test_vigenere():
     assert (
         vigenere("divert troops to east ridge", key="WHITE")
         == "ZPDXVP AZHSLZ BH IWZB KMZNM"
+    )
+
+
+def test_playfair():
+    assert (
+        playfair("meet me at hammersmith bridge tonight", key="CHARLES")
+        == "GD DO GD RQ AR KY GD HD NK PR DA MS OG UP GK IC QY"
     )

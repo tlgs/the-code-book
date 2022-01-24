@@ -69,6 +69,7 @@ def playfair(plaintext: str, key: str) -> str:
     # build matrix
     cipher_alphabet = list(_keyed_alphabet(key))
     cipher_alphabet.remove("J")
+
     char_to_coord, coord_to_char = {}, {}
     for i, c in enumerate(cipher_alphabet):
         x, y = (i % 5, i // 5)
@@ -85,6 +86,7 @@ def playfair(plaintext: str, key: str) -> str:
         if seen_two:
             seen_two = False
             continue
+
         if a != b:
             digraphs.append(a + b)
             seen_two = True
@@ -101,15 +103,15 @@ def playfair(plaintext: str, key: str) -> str:
         v, w = char_to_coord[digraph[1].upper()]
 
         if y == w:
-            p = coord_to_char[(x + 1) % 5, y]
-            q = coord_to_char[(v + 1) % 5, y]
+            a = coord_to_char[(x + 1) % 5, y]
+            b = coord_to_char[(v + 1) % 5, y]
         elif x == v:
-            p = coord_to_char[x, (y + 1) % 5]
-            q = coord_to_char[x, (w + 1) % 5]
+            a = coord_to_char[x, (y + 1) % 5]
+            b = coord_to_char[x, (w + 1) % 5]
         else:
-            p = coord_to_char[v, y]
-            q = coord_to_char[x, w]
+            a = coord_to_char[v, y]
+            b = coord_to_char[x, w]
 
-        ciphertext.append(p + q)
+        ciphertext.append(a + b)
 
     return " ".join(ciphertext)

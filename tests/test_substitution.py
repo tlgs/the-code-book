@@ -1,3 +1,5 @@
+import pytest
+
 from codebook.substitution import caesar, generic, keyphrase, playfair, vigenere
 
 
@@ -23,8 +25,20 @@ def test_vigenere():
     )
 
 
-def test_playfair():
-    assert (
-        playfair("meet me at hammersmith bridge tonight", key="CHARLES")
-        == "GD DO GD RQ AR KY GD HD NK PR DA MS OG UP GK IC QY"
-    )
+@pytest.mark.parametrize(
+    "plaintext, key, expected",
+    [
+        (
+            "meet me at hammersmith bridge tonight",
+            "CHARLES",
+            "GD DO GD RQ AR KY GD HD NK PR DA MS OG UP GK IC QY",
+        ),
+        (
+            "hide the gold in the tree stump",
+            "PLAYFAIR EXAMPLE",
+            "BM OD ZB XD NA BE KU DM UI XM MO UV IF",
+        ),
+    ],
+)
+def test_playfair(plaintext, key, expected):
+    assert playfair(plaintext, key) == expected

@@ -79,22 +79,20 @@ def playfair(plaintext: str, key: str) -> str:
     char_to_coord["J"] = char_to_coord["I"]
 
     # collect digraphs
-    filtered = [c for c in plaintext if c.isalpha()]
     digraphs = []
-    seen_two = False
-    for a, b in itertools.pairwise(filtered):
-        if seen_two:
-            seen_two = False
-            continue
-
+    filtered = [c for c in plaintext if c.isalpha()]
+    i = 0
+    while i + 1 < len(filtered):
+        a, b = filtered[i], filtered[i + 1]
         if a != b:
             digraphs.append(a + b)
-            seen_two = True
+            i += 2
         else:
             digraphs.append(a + "x")
+            i += 1
 
-    if digraphs[-1][-1] != filtered[-1]:
-        digraphs.append(filtered[-1] + "x")
+    if i < len(filtered):
+        digraphs.append(filtered[i] + "x")
 
     # apply transfrom
     ciphertext = []

@@ -13,13 +13,13 @@ def validate_key(key: str) -> str:
         raise ValueError("Key should be uppercase.")
 
     seen = set()
-    filtered_key = []
+    squeezed = []
     for c in filter(str.isalpha, key):
         if c not in seen:
             seen.add(c)
-            filtered_key.append(c)
+            squeezed.append(c)
 
-    return "".join(filtered_key)
+    return "".join(squeezed)
 
 
 def validate_cipher_alphabet(cipher_alphabet: str) -> str:

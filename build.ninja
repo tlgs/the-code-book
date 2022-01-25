@@ -1,16 +1,17 @@
 root = .
+module_name = codebook
 
-rule docs
+rule pdoc
   command = pdoc --no-search -o $root/docs $in
-build docs: docs codebook
+build pdoc: pdoc $module_name
 
 rule test
   command = coverage run --branch --source=$in -m pytest
   pool = console
-build test: test $root/codebook
+build test: test $root/$module_name
 
 rule report
   command = coverage report -m
 build report: report
 
-default docs
+default pdoc

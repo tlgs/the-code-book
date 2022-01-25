@@ -4,4 +4,6 @@ __pycache__/
 .envrc
 .venv/
 
+.ninja_log
+
 .coverage

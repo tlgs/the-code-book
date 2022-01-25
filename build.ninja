@@ -1,0 +1,20 @@
+root = .
+
+rule docs
+  command = pdoc -o $root/docs $in
+build docs: docs codebook
+
+rule test
+  command = coverage run --branch -m pytest
+  pool = console
+build test: test
+
+rule report
+  command = coverage report -m $in
+build report: report $
+    $root/codebook/__init__.py $
+    $root/codebook/substitution.py $
+    $root/codebook/transposition.py $
+    $root/codebook/utils.py
+
+default docs

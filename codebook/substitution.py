@@ -10,18 +10,15 @@ def _shifted_alphabet(n: int) -> str:
 
 
 def _keyed_alphabet(key: str, *, from_start: bool = True) -> str:
-    seen = []
-    for c in filter(str.isalpha, key):
-        if c not in seen:
-            seen.append(c)
+    seen = set(key)
 
     if from_start:
         remaining = [c for c in string.ascii_uppercase if c not in seen]
     else:
-        start = ord(seen[-1]) - 65
+        start = ord(key[-1]) - 65
         remaining = [c for c in _shifted_alphabet(start + 1) if c not in seen]
 
-    return "".join(seen + remaining)
+    return key + "".join(remaining)
 
 
 def caesar(plaintext: str, shift: int) -> str:
@@ -41,6 +38,8 @@ def generic(plaintext: str, cipher_alphabet: str) -> str:
 
 def keyphrase(plaintext: str, key: str) -> str:
     """Generic substitution using a keyphrase; page 13"""
+    key = validate_key(key)
+
     return generic(plaintext, _keyed_alphabet(key, from_start=False))
 
 

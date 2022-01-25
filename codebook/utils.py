@@ -12,7 +12,14 @@ def validate_key(key: str) -> str:
     if not key.isupper():
         raise ValueError("Key should be uppercase.")
 
-    return key
+    seen = set()
+    filtered_key = []
+    for c in filter(str.isalpha, key):
+        if c not in seen:
+            seen.add(c)
+            filtered_key.append(c)
+
+    return "".join(filtered_key)
 
 
 def validate_cipher_alphabet(cipher_alphabet: str) -> str:

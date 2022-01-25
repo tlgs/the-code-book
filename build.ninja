@@ -1,20 +1,16 @@
 root = .
 
 rule docs
-  command = pdoc -o $root/docs $in
+  command = pdoc --no-search -o $root/docs $in
 build docs: docs codebook
 
 rule test
-  command = coverage run --branch -m pytest
+  command = coverage run --branch --source=$in -m pytest
   pool = console
-build test: test
+build test: test $root/codebook
 
 rule report
-  command = coverage report -m $in
-build report: report $
-    $root/codebook/__init__.py $
-    $root/codebook/substitution.py $
-    $root/codebook/transposition.py $
-    $root/codebook/utils.py
+  command = coverage report -m
+build report: report
 
 default docs

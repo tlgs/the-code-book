@@ -4,6 +4,8 @@ __pycache__/
 .envrc
 .venv/
 
+*.egg-info
+
 .ninja_log
 
 .coverage

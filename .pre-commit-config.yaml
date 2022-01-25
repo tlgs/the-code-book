@@ -30,3 +30,8 @@ repos:
       - id: mypy
         args: ['--strict']
         exclude: 'tests/'
+
+  - repo: https://github.com/asottile/setup-cfg-fmt
+    rev: v1.20.0
+    hooks:
+      - id: setup-cfg-fmt

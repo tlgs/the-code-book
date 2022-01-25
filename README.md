@@ -4,10 +4,10 @@ This is a _code along_ to Simon Singh's
 [The Code Book](https://simonsingh.net/books/the-code-book/)
 (ISBN 978-1-85702-889-8).
 
-Run tests with `coverage run --branch -m pytest`;
-inspect coverage results with `coverage report -m codebook/*.py`.
+## Motivation
 
-Generate documentation with `pdoc -o docs codebook`.
+- implement simple cryptographic primitives using standard Python
+- mess around with [pytest](https://docs.pytest.org/) to power a _test-first_ development cycle
 
 ## Disclaimer
 

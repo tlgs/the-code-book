@@ -41,4 +41,4 @@ def test_vigenere():
     ],
 )
 def test_playfair(plaintext, key, expected):
-    assert playfair(plaintext, key) == expected
+    assert playfair(plaintext, key=key) == expected

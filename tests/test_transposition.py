@@ -5,7 +5,7 @@ def test_rail_fence():
     assert (
         rail_fence(
             "thy secret is thy prisoner; if thou let it go, thou art a prisoner to it",
-            rails=2,
+            n=2,
         )
         == "TYERTSHPIOEITOLTTOHURARSNROTHSCEITYRSNRFHUEIGTOATPIOETI"
     )

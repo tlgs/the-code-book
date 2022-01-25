@@ -9,7 +9,7 @@ def _shifted_alphabet(n: int) -> str:
     return (string.ascii_uppercase * 2)[n : n + 26]
 
 
-def _keyed_alphabet(key: str, *, from_start: bool = True) -> str:
+def _keyed_alphabet(key: str, *, from_start: bool) -> str:
     seen = set(key)
 
     if from_start:
@@ -21,12 +21,13 @@ def _keyed_alphabet(key: str, *, from_start: bool = True) -> str:
     return key + "".join(remaining)
 
 
-def caesar(plaintext: str, shift: int) -> str:
+def caesar(plaintext: str, *, shift: int) -> str:
     """Caesar cipher; page 10"""
-    return generic(plaintext, _shifted_alphabet(shift % 26))
+    alphabet = _shifted_alphabet(shift % 26)
+    return generic(plaintext, cipher_alphabet=alphabet)
 
 
-def generic(plaintext: str, cipher_alphabet: str) -> str:
+def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     """Generic substitution cipher; page 12"""
     plaintext = validate_plaintext(plaintext)
     cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
@@ -36,14 +37,15 @@ def generic(plaintext: str, cipher_alphabet: str) -> str:
     return plaintext.translate(mapping)
 
 
-def keyphrase(plaintext: str, key: str) -> str:
+def keyphrase(plaintext: str, *, key: str) -> str:
     """Generic substitution using a keyphrase; page 13"""
     key = validate_key(key)
 
-    return generic(plaintext, _keyed_alphabet(key, from_start=False))
+    alphabet = _keyed_alphabet(key, from_start=False)
+    return generic(plaintext, cipher_alphabet=alphabet)
 
 
-def vigenere(plaintext: str, key: str) -> str:
+def vigenere(plaintext: str, *, key: str) -> str:
     """Vigenère cipher; page 48"""
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)
@@ -60,13 +62,13 @@ def vigenere(plaintext: str, key: str) -> str:
     return "".join(ciphertext)
 
 
-def playfair(plaintext: str, key: str) -> str:
+def playfair(plaintext: str, *, key: str) -> str:
     """Playfair cipher; page 372"""
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)
 
     # build matrix
-    cipher_alphabet = list(_keyed_alphabet(key))
+    cipher_alphabet = list(_keyed_alphabet(key, from_start=True))
     cipher_alphabet.remove("J")
 
     char_to_coord, coord_to_char = {}, {}

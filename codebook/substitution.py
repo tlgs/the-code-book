@@ -71,13 +71,13 @@ def playfair(plaintext: str, *, key: str) -> str:
     cipher_alphabet = list(_keyed_alphabet(key, from_start=True))
     cipher_alphabet.remove("J")
 
-    char_to_coord, coord_to_char = {}, {}
+    from_char, to_char = {}, {}
     for i, c in enumerate(cipher_alphabet):
         x, y = (i % 5, i // 5)
-        char_to_coord[c] = (x, y)
-        coord_to_char[x, y] = c
+        from_char[c] = (x, y)
+        to_char[x, y] = c
 
-    char_to_coord["J"] = char_to_coord["I"]
+    from_char["J"] = from_char["I"]
 
     # collect digraphs
     digraphs = []
@@ -98,18 +98,18 @@ def playfair(plaintext: str, *, key: str) -> str:
     # apply transfrom
     ciphertext = []
     for digraph in digraphs:
-        x, y = char_to_coord[digraph[0].upper()]
-        v, w = char_to_coord[digraph[1].upper()]
+        x, y = from_char[digraph[0].upper()]
+        v, w = from_char[digraph[1].upper()]
 
         if y == w:
-            a = coord_to_char[(x + 1) % 5, y]
-            b = coord_to_char[(v + 1) % 5, y]
+            a = to_char[(x + 1) % 5, y]
+            b = to_char[(v + 1) % 5, y]
         elif x == v:
-            a = coord_to_char[x, (y + 1) % 5]
-            b = coord_to_char[x, (w + 1) % 5]
+            a = to_char[x, (y + 1) % 5]
+            b = to_char[x, (w + 1) % 5]
         else:
-            a = coord_to_char[v, y]
-            b = coord_to_char[x, w]
+            a = to_char[v, y]
+            b = to_char[x, w]
 
         ciphertext.append(a + b)
 

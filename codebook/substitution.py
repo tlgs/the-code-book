@@ -1,19 +1,19 @@
 """Cryptography substitution primitives"""
 import itertools
-import string
+from string import ascii_lowercase, ascii_uppercase
 
 from codebook.utils import validate_cipher_alphabet, validate_key, validate_plaintext
 
 
 def _shifted_alphabet(n: int) -> str:
-    return (string.ascii_uppercase * 2)[n : n + 26]
+    return ascii_uppercase[n:] + ascii_uppercase[:n]
 
 
 def _keyed_alphabet(key: str, *, from_start: bool) -> str:
     seen = set(key)
 
     if from_start:
-        remaining = [c for c in string.ascii_uppercase if c not in seen]
+        remaining = [c for c in ascii_uppercase if c not in seen]
     else:
         start = ord(key[-1]) - 65
         remaining = [c for c in _shifted_alphabet(start + 1) if c not in seen]
@@ -32,7 +32,7 @@ def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     plaintext = validate_plaintext(plaintext)
     cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
 
-    mapping = str.maketrans(dict(zip(string.ascii_lowercase, cipher_alphabet)))
+    mapping = str.maketrans(dict(zip(ascii_lowercase, cipher_alphabet)))
 
     return plaintext.translate(mapping)
 

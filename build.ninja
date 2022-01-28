@@ -6,7 +6,7 @@ rule pdoc
 build pdoc: pdoc $module_name
 
 rule test
-  command = coverage run --branch --source=$in -m pytest
+  command = coverage run --branch --source=$in -m pytest -v
   pool = console
 build test: test $root/$module_name
 

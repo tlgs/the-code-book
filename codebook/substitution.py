@@ -1,4 +1,12 @@
-"""Cryptography substitution primitives"""
+"""
+This module defines a number of classical substitution ciphers.
+
+It features different types of substitution ciphers:
+
+  - Monoalphabetic: `generic`, `caesar`, `keyphrase`
+  - Polyalphabetic: `vigenere`
+  - Polygraphic: `playfair`
+"""
 import itertools
 from string import ascii_lowercase, ascii_uppercase
 
@@ -21,14 +29,12 @@ def _keyed_alphabet(key: str, *, from_start: bool) -> str:
     return key + "".join(remaining)
 
 
-def caesar(plaintext: str, *, shift: int) -> str:
-    """Caesar cipher; page 10"""
-    alphabet = _shifted_alphabet(shift % 26)
-    return generic(plaintext, cipher_alphabet=alphabet)
-
-
 def generic(plaintext: str, *, cipher_alphabet: str) -> str:
-    """Generic substitution cipher; page 12"""
+    """Monoalphabetic substitution cipher (page 12)
+
+    - `plaintext` is the message to be encrypted
+    - `cipher_alphabet` is the cipher alphabet that represents the substitution
+    """
     plaintext = validate_plaintext(plaintext)
     cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
 
@@ -37,8 +43,27 @@ def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     return plaintext.translate(mapping)
 
 
+def caesar(plaintext: str, *, shift: int) -> str:
+    """Caesar cipher (page 10)
+
+    - `plaintext` is the message to be encrypted
+    - `shift` is the number of places to rotate the plain alphabet (right shift)
+    """
+    alphabet = _shifted_alphabet(shift % 26)
+    return generic(plaintext, cipher_alphabet=alphabet)
+
+
 def keyphrase(plaintext: str, *, key: str) -> str:
-    """Generic substitution using a keyphrase; page 13"""
+    """Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)
+
+    - `plaintext` is the message to be encrypted
+    - `key` is the keyword or keyphrase used to generate the cipher alphabet
+
+    As per the example in the book, the remainder of the alphabet starts
+    where the keyphrase ends.
+    For example, `JULIUS CAESAR` generates the `JULISCAERTVWXYZBDFGHKMNOPQ` alphabet
+    and not `JULISCAERBDFGHKMNOPQTVWXYZ`, which is a common alternative.
+    """
     key = validate_key(key)
 
     alphabet = _keyed_alphabet(key, from_start=False)
@@ -46,7 +71,11 @@ def keyphrase(plaintext: str, *, key: str) -> str:
 
 
 def vigenere(plaintext: str, *, key: str) -> str:
-    """Vigenère cipher; page 48"""
+    """Vigenère cipher (page 48)
+
+    - `plaintext` is the message to be encrypted
+    - `key` defines the series of interwoven Caesar ciphers to be used
+    """
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)
 
@@ -63,7 +92,15 @@ def vigenere(plaintext: str, *, key: str) -> str:
 
 
 def playfair(plaintext: str, *, key: str) -> str:
-    """Playfair cipher; page 372"""
+    """Playfair cipher (Appendix E, page 372)
+
+    - `plaintext` is the message to be encrypted
+    - `key` defines the 5x5 table used for encryption
+
+    As per the example on the book, `J` and `I` share a space on the table
+    and `x` is used as padding for *same-letter* digrams and for the *last space*,
+    if required.
+    """
     plaintext = validate_plaintext(plaintext)
     key = validate_key(key)
 

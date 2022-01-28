@@ -29,10 +29,10 @@
                     <h2>API Documentation</h2>
                         <ul class="memberlist">
             <li>
-                    <a class="function" href="#caesar">caesar</a>
+                    <a class="function" href="#generic">generic</a>
             </li>
             <li>
-                    <a class="function" href="#generic">generic</a>
+                    <a class="function" href="#caesar">caesar</a>
             </li>
             <li>
                     <a class="function" href="#keyphrase">keyphrase</a>
@@ -59,12 +59,28 @@
                     <h1 class="modulename">
 <a href="./../codebook.html">codebook</a><wbr>.substitution    </h1>
 
-                        <div class="docstring"><p>Cryptography substitution primitives</p>
+                        <div class="docstring"><p>This module defines a number of classical substitution ciphers.</p>
+
+<p>It features different types of substitution ciphers:</p>
+
+<ul>
+<li>Monoalphabetic: <code><a href="#generic">generic</a></code>, <code><a href="#caesar">caesar</a></code>, <code><a href="#keyphrase">keyphrase</a></code></li>
+<li>Polyalphabetic: <code><a href="#vigenere">vigenere</a></code></li>
+<li>Polygraphic: <code><a href="#playfair">playfair</a></code></li>
+</ul>
 </div>
 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;Cryptography substitution primitives&quot;&quot;&quot;</span>
+            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines a number of classical substitution ciphers.</span>
+
+<span class="sd">It features different types of substitution ciphers:</span>
+
+<span class="sd">  - Monoalphabetic: `generic`, `caesar`, `keyphrase`</span>
+<span class="sd">  - Polyalphabetic: `vigenere`</span>
+<span class="sd">  - Polygraphic: `playfair`</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">ascii_uppercase</span>
 
@@ -87,14 +103,12 @@
     <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Caesar cipher; page 10&quot;&quot;&quot;</span>
-    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">shift</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
-
-
 <span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generic substitution cipher; page 12&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
+<span class="sd">    </span>
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `cipher_alphabet` is the cipher alphabet that represents the substitution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="n">validate_cipher_alphabet</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">)</span>
 
@@ -103,8 +117,27 @@
     <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `shift` is the number of places to rotate the plain alphabet (right shift)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">shift</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generic substitution using a keyphrase; page 13&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
+<span class="sd">    </span>
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` is the keyword or keyphrase used to generate the cipher alphabet</span>
+
+<span class="sd">    As per the example in the book, the remainder of the alphabet starts</span>
+<span class="sd">    where the keyphrase ends.</span>
+<span class="sd">    For example, `JULIUS CAESAR` generates the `JULISCAERTVWXYZBDFGHKMNOPQ` alphabet</span>
+<span class="sd">    and not `JULISCAERBDFGHKMNOPQTVWXYZ`, which is a common alternative.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_keyed_alphabet</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -112,7 +145,11 @@
 
 
 <span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Vigenère cipher; page 48&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` defines the series of interwoven Caesar ciphers to be used</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -129,7 +166,15 @@
 
 
 <span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Playfair cipher; page 372&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` defines the 5x5 table used for encryption</span>
+
+<span class="sd">    As per the example on the book, `J` and `I` share a space on the table</span>
+<span class="sd">    and `x` is used as padding for *same-letter* digrams and for the *last space*,</span>
+<span class="sd">    if required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -185,29 +230,6 @@
         </details>
 
             </section>
-                <section id="caesar">
-                            <div class="attr function"><a class="headerlink" href="#caesar">#&nbsp;&nbsp</a>
-
-
-            <span class="def">def</span>
-            <span class="name">caesar</span><span class="signature">(plaintext: str, *, shift: int) -&gt; str</span>:
-    </div>
-
-                <details>
-            <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Caesar cipher; page 10&quot;&quot;&quot;</span>
-    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">shift</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
-</pre></div>
-
-        </details>
-
-            <div class="docstring"><p>Caesar cipher; page 10</p>
-</div>
-
-
-                </section>
                 <section id="generic">
                             <div class="attr function"><a class="headerlink" href="#generic">#&nbsp;&nbsp</a>
 
@@ -219,7 +241,11 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generic substitution cipher; page 12&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
+<span class="sd">    </span>
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `cipher_alphabet` is the cipher alphabet that represents the substitution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="n">validate_cipher_alphabet</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">)</span>
 
@@ -230,7 +256,44 @@
 
         </details>
 
-            <div class="docstring"><p>Generic substitution cipher; page 12</p>
+            <div class="docstring"><p>Monoalphabetic substitution cipher (page 12)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>cipher_alphabet</code> is the cipher alphabet that represents the substitution</li>
+</ul>
+</div>
+
+
+                </section>
+                <section id="caesar">
+                            <div class="attr function"><a class="headerlink" href="#caesar">#&nbsp;&nbsp</a>
+
+
+            <span class="def">def</span>
+            <span class="name">caesar</span><span class="signature">(plaintext: str, *, shift: int) -&gt; str</span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `shift` is the number of places to rotate the plain alphabet (right shift)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">shift</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Caesar cipher (page 10)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>shift</code> is the number of places to rotate the plain alphabet (right shift)</li>
+</ul>
 </div>
 
 
@@ -246,7 +309,16 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generic substitution using a keyphrase; page 13&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
+<span class="sd">    </span>
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` is the keyword or keyphrase used to generate the cipher alphabet</span>
+
+<span class="sd">    As per the example in the book, the remainder of the alphabet starts</span>
+<span class="sd">    where the keyphrase ends.</span>
+<span class="sd">    For example, `JULIUS CAESAR` generates the `JULISCAERTVWXYZBDFGHKMNOPQ` alphabet</span>
+<span class="sd">    and not `JULISCAERBDFGHKMNOPQTVWXYZ`, which is a common alternative.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_keyed_alphabet</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -255,7 +327,17 @@
 
         </details>
 
-            <div class="docstring"><p>Generic substitution using a keyphrase; page 13</p>
+            <div class="docstring"><p>Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>key</code> is the keyword or keyphrase used to generate the cipher alphabet</li>
+</ul>
+
+<p>As per the example in the book, the remainder of the alphabet starts
+where the keyphrase ends.
+For example, <code>JULIUS CAESAR</code> generates the <code>JULISCAERTVWXYZBDFGHKMNOPQ</code> alphabet
+and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.</p>
 </div>
 
 
@@ -271,7 +353,11 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Vigenère cipher; page 48&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` defines the series of interwoven Caesar ciphers to be used</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -289,7 +375,12 @@
 
         </details>
 
-            <div class="docstring"><p>Vigenère cipher; page 48</p>
+            <div class="docstring"><p>Vigenère cipher (page 48)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>key</code> defines the series of interwoven Caesar ciphers to be used</li>
+</ul>
 </div>
 
 
@@ -305,7 +396,15 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Playfair cipher; page 372&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` defines the 5x5 table used for encryption</span>
+
+<span class="sd">    As per the example on the book, `J` and `I` share a space on the table</span>
+<span class="sd">    and `x` is used as padding for *same-letter* digrams and for the *last space*,</span>
+<span class="sd">    if required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -360,7 +459,16 @@
 
         </details>
 
-            <div class="docstring"><p>Playfair cipher; page 372</p>
+            <div class="docstring"><p>Playfair cipher (Appendix E, page 372)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>key</code> defines the 5x5 table used for encryption</li>
+</ul>
+
+<p>As per the example on the book, <code>J</code> and <code>I</code> share a space on the table
+and <code>x</code> is used as padding for <em>same-letter</em> digrams and for the <em>last space</em>,
+if required.</p>
 </div>
 
 

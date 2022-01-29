@@ -1,1 +1,1 @@
-__all__ = ["substitution", "transposition"]
+__all__ = ["rsa", "substitution", "transposition"]

@@ -8,6 +8,7 @@ This is a _code along_ to Simon Singh's
 
 - implement simple cryptographic primitives using standard Python
 - mess around with [pytest](https://docs.pytest.org/) to power a _test-first_ development cycle
+- design a Python package with a sensible API (complete with lightweight documentation)
 
 ## Disclaimer
 

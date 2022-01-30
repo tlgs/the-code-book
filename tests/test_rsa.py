@@ -1,5 +1,6 @@
 import base64
 
+import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa as ext_rsa
 from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 
@@ -20,3 +21,32 @@ def test_rsa():
     plaintext = private_key.decrypt(base64.b64decode(b64_ciphertext), PKCS1v15())
 
     assert plaintext.decode("utf-8") == message
+
+
+def test_rsa_message_too_long():
+    private_key = ext_rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=1024,
+    )
+    pub = private_key.public_key().public_numbers()
+
+    message = """\
+The upward creep of postal rates
+accompanied by the deterioration
+of postal service is a trend that
+may or may not continue, but as far as
+most private communication is con-
+cerned, in a few decades it probably will
+not matter. The reason is simple. The
+transfer of information will probably be
+much faster and much cheaper by "elec-
+tronic mail" than by conventional postal
+systems. Before long it should be possi-
+ble to go to any telephone, insert a mes-
+sage into an attachment and dial a num-
+ber. The telephone at the other end will
+print out the message at once.
+"""
+
+    with pytest.raises(ValueError):
+        rsa(message, public_key=(pub.n, pub.e))

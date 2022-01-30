@@ -73,9 +73,9 @@ codebook    </h1>
 <span class="kn">import</span> <span class="nn">secrets</span>
 
 
-<span class="k">def</span> <span class="nf">_non_zero_random_bytes</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)]</span>
-    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="n">secrets</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="k">def</span> <span class="nf">_nonzero_random_bytes</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)]</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="n">secrets</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 
 
@@ -86,15 +86,16 @@ codebook    </h1>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="c1"># Length checking:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">))</span>
+    <span class="c1"># Length checking</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">11</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;message too long&quot;</span><span class="p">)</span>
 
-    <span class="c1"># EME-PKCS1-v1_5 encoding:</span>
-    <span class="n">PS</span> <span class="o">=</span> <span class="n">_non_zero_random_bytes</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
-    <span class="n">EM</span> <span class="o">=</span>  <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00\x02</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">PS</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">M</span>
+    <span class="c1"># EME-PKCS1-v1_5 encoding</span>
+    <span class="n">PS</span> <span class="o">=</span> <span class="n">_nonzero_random_bytes</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">EM</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00\x02</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">PS</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">M</span>
 
-    <span class="c1"># RSA encryption:</span>
+    <span class="c1"># RSA encryption</span>
     <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">EM</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
@@ -102,11 +103,9 @@ codebook    </h1>
     <span class="k">return</span> <span class="n">C</span>
 
 
-<span class="k">def</span> <span class="nf">rsa</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<span class="k">def</span> <span class="nf">rsa</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 </pre></div>
 

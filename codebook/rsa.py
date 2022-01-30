@@ -2,12 +2,6 @@ import base64
 import secrets
 
 
-def _nonzero_random_bytes(n: int) -> bytes:
-    values = [x.to_bytes(1, "big") for x in range(1, 256)]
-    seq = [secrets.choice(values) for _ in range(n)]
-    return b"".join(seq)
-
-
 def _pkcs1v15(n: int, e: int, M: bytes) -> bytes:
     """RSAES-PKCS1-v1_5
 
@@ -20,7 +14,7 @@ def _pkcs1v15(n: int, e: int, M: bytes) -> bytes:
         raise ValueError("message too long")
 
     # EME-PKCS1-v1_5 encoding
-    PS = _nonzero_random_bytes(k - len(M) - 3)
+    PS = bytes(secrets.randbelow(255) + 1 for _ in range(k - len(M) - 3))
     EM = b"\x00\x02" + PS + b"\x00" + M
 
     # RSA encryption

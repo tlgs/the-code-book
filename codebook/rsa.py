@@ -15,7 +15,6 @@ def _pkcs1v15(n: int, e: int, M: bytes) -> bytes:
     """
     k = (n.bit_length() - 1) // 8 + 1
 
-    print(len(M))
     # Length checking
     if len(M) > k - 11:
         raise ValueError("message too long")

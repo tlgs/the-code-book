@@ -47,17 +47,40 @@
                     <h1 class="modulename">
 <a href="./../codebook.html">codebook</a><wbr>.rsa    </h1>
 
+                        <div class="docstring"><p>This module defines the RSA public-key algorithm.</p>
+
+<p>The RSA cryptosystem involves multiple steps:
+key generation, key distribution, encryption, and decryption.
+This solution focuses solely on the <strong>encryption</strong> stage.</p>
+
+<p>It implements the encryption operation using the PKCS1 v1.5 padding scheme.</p>
+</div>
 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">base64</span>
+            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines the RSA public-key algorithm.</span>
+
+<span class="sd">The RSA cryptosystem involves multiple steps:</span>
+<span class="sd">key generation, key distribution, encryption, and decryption.</span>
+<span class="sd">This solution focuses solely on the **encryption** stage.</span>
+
+<span class="sd">It implements the encryption operation using the PKCS1 v1.5 padding scheme.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
 
 
 <span class="k">def</span> <span class="nf">_pkcs1v15</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;RSAES-PKCS1-v1_5</span>
+    <span class="sd">&quot;&quot;&quot;RSAES-PKCS1-V1_5 encryption operation</span>
 
-<span class="sd">    See &lt;https://datatracker.ietf.org/doc/html/rfc8017#section-7.2&gt;</span>
+<span class="sd">    - `n` is the public modulus</span>
+<span class="sd">    - `e` is the public exponent</span>
+<span class="sd">    - `M` is the message to be encrypted - an octet string</span>
+
+<span class="sd">    See:</span>
+<span class="sd">      - &lt;https://datatracker.ietf.org/doc/html/rfc8017#section-7.2&gt;</span>
+<span class="sd">      - &lt;https://stackoverflow.com/q/70910756/5818220&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -78,6 +101,15 @@
 
 
 <span class="k">def</span> <span class="nf">rsa</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;RSA public-key algorithm (Appendix J, page 379)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
+
+<span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
+<span class="sd">    usage of a padding scheme.</span>
+<span class="sd">    This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
@@ -97,6 +129,15 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">rsa</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;RSA public-key algorithm (Appendix J, page 379)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
+
+<span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
+<span class="sd">    usage of a padding scheme.</span>
+<span class="sd">    This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
@@ -104,6 +145,17 @@
 
         </details>
 
+            <div class="docstring"><p>RSA public-key algorithm (Appendix J, page 379)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>public_key</code> is the tuple <code>(n, e)</code> consisting of the public modulus and exponent</li>
+</ul>
+
+<p>Unlike the example in the book, practical applications of RSA require the
+usage of a padding scheme.
+This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</p>
+</div>
 
 
                 </section>

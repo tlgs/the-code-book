@@ -1,11 +1,26 @@
+"""
+This module defines the RSA public-key algorithm.
+
+The RSA cryptosystem involves multiple steps:
+key generation, key distribution, encryption, and decryption.
+This solution focuses solely on the **encryption** stage.
+
+It implements the encryption operation using the PKCS1 v1.5 padding scheme.
+"""
 import base64
 import secrets
 
 
 def _pkcs1v15(n: int, e: int, M: bytes) -> bytes:
-    """RSAES-PKCS1-v1_5
+    """RSAES-PKCS1-V1_5 encryption operation
 
-    See <https://datatracker.ietf.org/doc/html/rfc8017#section-7.2>
+    - `n` is the public modulus
+    - `e` is the public exponent
+    - `M` is the message to be encrypted - an octet string
+
+    See:
+      - <https://datatracker.ietf.org/doc/html/rfc8017#section-7.2>
+      - <https://stackoverflow.com/q/70910756/5818220>
     """
     k = (n.bit_length() - 1) // 8 + 1
 
@@ -26,6 +41,15 @@ def _pkcs1v15(n: int, e: int, M: bytes) -> bytes:
 
 
 def rsa(plaintext: str, *, public_key: tuple[int, int]) -> str:
+    """RSA public-key algorithm (Appendix J, page 379)
+
+    - `plaintext` is the message to be encrypted
+    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent
+
+    Unlike the example in the book, practical applications of RSA require the
+    usage of a padding scheme; this implementation employs the PKCS1 v1.5
+    encryption operation as defined in RFC 8017.
+    """
     message = bytes(plaintext, "utf-8")
     ciphertext = _pkcs1v15(*public_key, message)
     return base64.b64encode(ciphertext).decode()

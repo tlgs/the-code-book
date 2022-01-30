@@ -3,7 +3,7 @@ This module defines a number of classical substitution ciphers.
 
 It features different types of substitution ciphers:
 
-  - Monoalphabetic: `generic`, `caesar`, `keyphrase`
+  - Monoalphabetic: `caesar`, `generic`, `keyphrase`
   - Polyalphabetic: `vigenere`
   - Polygraphic: `playfair`
 """
@@ -29,6 +29,16 @@ def _keyed_alphabet(key: str, *, from_start: bool) -> str:
     return key + "".join(remaining)
 
 
+def caesar(plaintext: str, *, shift: int) -> str:
+    """Caesar cipher (page 10)
+
+    - `plaintext` is the message to be encrypted
+    - `shift` is the number of places to rotate the plain alphabet (right shift)
+    """
+    alphabet = _shifted_alphabet(shift % 26)
+    return generic(plaintext, cipher_alphabet=alphabet)
+
+
 def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     """Monoalphabetic substitution cipher (page 12)
 
@@ -41,16 +51,6 @@ def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     mapping = str.maketrans(dict(zip(ascii_lowercase, cipher_alphabet)))
 
     return plaintext.translate(mapping)
-
-
-def caesar(plaintext: str, *, shift: int) -> str:
-    """Caesar cipher (page 10)
-
-    - `plaintext` is the message to be encrypted
-    - `shift` is the number of places to rotate the plain alphabet (right shift)
-    """
-    alphabet = _shifted_alphabet(shift % 26)
-    return generic(plaintext, cipher_alphabet=alphabet)
 
 
 def keyphrase(plaintext: str, *, key: str) -> str:
@@ -97,7 +97,7 @@ def playfair(plaintext: str, *, key: str) -> str:
     - `plaintext` is the message to be encrypted
     - `key` defines the 5x5 table used for encryption
 
-    As per the example on the book, `J` and `I` share a space on the table
+    As per the example in the book, `J` and `I` share a space on the table
     and `x` is used as padding for *same-letter* digrams and for the *last space*,
     if required.
     """

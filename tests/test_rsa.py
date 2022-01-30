@@ -7,28 +7,31 @@ from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 from codebook.rsa import rsa
 
 
-def test_rsa():
+@pytest.fixture(scope="module")
+def keys():
     private_key = ext_rsa.generate_private_key(
         public_exponent=65537,
-        key_size=1024,
+        key_size=4096,
     )
+    public_key = private_key.public_key()
+    return private_key, public_key
 
-    pub = private_key.public_key().public_numbers()
+
+def test_rsa(keys):
+    private_key, public_key = keys
+    pub = public_key.public_numbers()
 
     message = "Clifford Cocks"
     b64_ciphertext = rsa(message, public_key=(pub.n, pub.e))
 
     plaintext = private_key.decrypt(base64.b64decode(b64_ciphertext), PKCS1v15())
 
-    assert plaintext.decode("utf-8") == message
+    assert plaintext.decode() == message
 
 
-def test_rsa_message_too_long():
-    private_key = ext_rsa.generate_private_key(
-        public_exponent=65537,
-        key_size=1024,
-    )
-    pub = private_key.public_key().public_numbers()
+def test_rsa_message_too_long(keys):
+    _, public_key = keys
+    pub = public_key.public_numbers()
 
     message = """\
 The upward creep of postal rates

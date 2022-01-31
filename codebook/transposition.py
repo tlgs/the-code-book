@@ -21,12 +21,12 @@ def rail_fence(plaintext: str, *, n: int = 2) -> str:
 
     filtered = [c for c in plaintext.upper() if c.isalpha()]
 
-    seqs = collections.defaultdict(list)
-    zigzag = itertools.cycle(itertools.chain(range(n), range(n - 2, 0, -1)))
+    rows = [""] * n
+    zigzag = itertools.cycle(itertools.chain(range(n - 1), range(n - 1, 0, -1)))
     for i, c in zip(zigzag, filtered):
-        seqs[i].append(c)
+        rows[i] += c
 
-    return "".join(["".join(seqs[i]) for i in range(n)])
+    return "".join(rows[i] for i in range(n))
 
 
 def scytale(plaintext: str, *, diameter: int) -> str:

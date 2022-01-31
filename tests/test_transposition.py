@@ -1,14 +1,24 @@
+import pytest
+
 from codebook.transposition import adfgvx, rail_fence, scytale
 
 
-def test_rail_fence():
-    assert (
-        rail_fence(
+@pytest.mark.parametrize(
+    "plaintext, n, expected",
+    [
+        pytest.param(
             "thy secret is thy prisoner; if thou let it go, thou art a prisoner to it",
-            n=2,
-        )
-        == "TYERTSHPIOEITOLTTOHURARSNROTHSCEITYRSNRFHUEIGTOATPIOETI"
-    )
+            2,
+            "TYERTSHPIOEITOLTTOHURARSNROTHSCEITYRSNRFHUEIGTOATPIOETI",
+            id="n=2",
+        ),
+        pytest.param(
+            "we are discovered. run at once.", 3, "WECRUOERDSOEERNTNEAIVDAC", id="n=3"
+        ),
+    ],
+)
+def test_rail_fence(plaintext, n, expected):
+    assert rail_fence(plaintext, n=n) == expected
 
 
 def test_scytale():

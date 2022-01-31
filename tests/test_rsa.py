@@ -51,5 +51,5 @@ ber. The telephone at the other end will
 print out the message at once.
 """
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="message too long"):
         rsa(message, public_key=(pub.n, pub.e))

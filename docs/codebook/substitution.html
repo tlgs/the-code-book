@@ -154,14 +154,10 @@
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">cycled_cipher_alphabet</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span>
-        <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span>
     <span class="p">)</span>
 
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">else</span> <span class="n">c</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span>
-    <span class="p">]</span>
-
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 
 
@@ -192,10 +188,9 @@
 
     <span class="c1"># collect digraphs</span>
     <span class="n">digraphs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">filtered</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
             <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
@@ -203,8 +198,8 @@
             <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">):</span>
-        <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtered</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
+        <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
 
     <span class="c1"># apply transfrom</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>
@@ -362,14 +357,10 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">cycled_cipher_alphabet</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span>
-        <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalpha</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span>
     <span class="p">)</span>
 
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">else</span> <span class="n">c</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span>
-    <span class="p">]</span>
-
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 </pre></div>
 
@@ -422,10 +413,9 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
 
     <span class="c1"># collect digraphs</span>
     <span class="n">digraphs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">filtered</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
             <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
@@ -433,8 +423,8 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
             <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">):</span>
-        <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtered</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
+        <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
 
     <span class="c1"># apply transfrom</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>

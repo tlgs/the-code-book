@@ -5,21 +5,19 @@ def validate_plaintext(plaintext: str) -> str:
     if not plaintext.islower():
         raise ValueError("Plaintext should be lowercase.")
 
-    return plaintext
+    return "".join(filter(str.isalnum, plaintext))
 
 
 def validate_key(key: str) -> str:
     if not key.isupper():
         raise ValueError("Key should be uppercase.")
 
-    seen = set()
-    squeezed = []
+    squoze = []
     for c in filter(str.isalpha, key):
-        if c not in seen:
-            seen.add(c)
-            squeezed.append(c)
+        if c not in squoze:
+            squoze.append(c)
 
-    return "".join(squeezed)
+    return "".join(squoze)
 
 
 def validate_cipher_alphabet(cipher_alphabet: str) -> str:

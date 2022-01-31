@@ -18,14 +18,12 @@ def rail_fence(plaintext: str, *, n: int = 2) -> str:
     """
     plaintext = validate_plaintext(plaintext)
 
-    filtered = [c for c in plaintext.upper() if c.isalpha()]
-
     rows = [""] * n
     zigzag = itertools.cycle(itertools.chain(range(n - 1), range(n - 1, 0, -1)))
-    for i, c in zip(zigzag, filtered):
+    for i, c in zip(zigzag, plaintext):
         rows[i] += c
 
-    return "".join(rows)
+    return "".join(rows).upper()
 
 
 def scytale(plaintext: str, *, diameter: int) -> str:
@@ -36,21 +34,19 @@ def scytale(plaintext: str, *, diameter: int) -> str:
     """
     plaintext = validate_plaintext(plaintext)
 
-    filtered = [c for c in plaintext.upper() if c.isalpha()]
-
-    d, m = divmod(len(filtered), diameter)
+    d, m = divmod(len(plaintext), diameter)
     rows = []
     for i in range(diameter):
         offset = i if m > i else m
         start = i * d + offset
         end = start + d + m - offset
-        rows.append(filtered[start:end])
+        rows.append(plaintext[start:end])
 
     seq = []
     for t in itertools.zip_longest(*rows):
         seq.append("".join(c or "" for c in t))
 
-    return "".join(seq)
+    return "".join(seq).upper()
 
 
 def adfgvx(plaintext: str, *, key: str) -> str:

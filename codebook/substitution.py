@@ -80,14 +80,10 @@ def vigenere(plaintext: str, *, key: str) -> str:
     key = validate_key(key)
 
     cycled_cipher_alphabet = itertools.cycle(
-        _shifted_alphabet(ord(c) - 65) for c in filter(str.isalpha, key)
+        _shifted_alphabet(ord(c) - 65) for c in key
     )
 
-    ciphertext = [
-        next(cycled_cipher_alphabet)[ord(c) - 97] if c.isalpha() else c
-        for c in plaintext
-    ]
-
+    ciphertext = [next(cycled_cipher_alphabet)[ord(c) - 97] for c in plaintext]
     return "".join(ciphertext)
 
 
@@ -118,10 +114,9 @@ def playfair(plaintext: str, *, key: str) -> str:
 
     # collect digraphs
     digraphs = []
-    filtered = [c for c in plaintext if c.isalpha()]
     i = 0
-    while i + 1 < len(filtered):
-        a, b = filtered[i], filtered[i + 1]
+    while i + 1 < len(plaintext):
+        a, b = plaintext[i], plaintext[i + 1]
         if a != b:
             digraphs.append(a + b)
             i += 2
@@ -129,8 +124,8 @@ def playfair(plaintext: str, *, key: str) -> str:
             digraphs.append(a + "x")
             i += 1
 
-    if i < len(filtered):
-        digraphs.append(filtered[i] + "x")
+    if i < len(plaintext):
+        digraphs.append(plaintext[i] + "x")
 
     # apply transfrom
     ciphertext = []

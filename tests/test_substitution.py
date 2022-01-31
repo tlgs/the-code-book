@@ -4,24 +4,24 @@ from codebook.substitution import caesar, generic, keyphrase, playfair, vigenere
 
 
 def test_caesar():
-    assert caesar("veni, vidi, vici", shift=3) == "YHQL, YLGL, YLFL"
+    assert caesar("veni, vidi, vici", shift=3) == "YHQLYLGLYLFL"
 
 
 def test_generic():
     assert (
         generic("et tu, brute?", cipher_alphabet="JLPAWIQBCTRZYDSKEGFXHUONVM")
-        == "WX XH, LGHXW?"
+        == "WXXHLGHXW"
     )
 
 
 def test_keyphrase():
-    assert keyphrase("et tu, brute?", key="JULIUS CAESAR") == "SH HK, UFKHS?"
+    assert keyphrase("et tu, brute?", key="JULIUS CAESAR") == "SHHKUFKHS"
 
 
 def test_vigenere():
     assert (
         vigenere("divert troops to east ridge", key="WHITE")
-        == "ZPDXVP AZHSLZ BH IWZB KMZNM"
+        == "ZPDXVPAZHSLZBHIWZBKMZNM"
     )
 
 
@@ -38,7 +38,7 @@ def test_vigenere():
             "hide the gold in the tree stump",
             "PLAYFAIR EXAMPLE",
             "BM OD ZB XD NA BE KU DM UI XM MO UV IF",
-            id="full length",
+            id="no padding",
         ),
     ],
 )

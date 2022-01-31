@@ -29,7 +29,7 @@ def test_rsa(keys):
     assert plaintext.decode() == message
 
 
-def test_rsa_message_too_long(keys):
+def test_rsa_raises(keys):
     _, public_key = keys
     pub = public_key.public_numbers()
 

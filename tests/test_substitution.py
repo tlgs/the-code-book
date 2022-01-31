@@ -28,15 +28,17 @@ def test_vigenere():
 @pytest.mark.parametrize(
     "plaintext, key, expected",
     [
-        (
+        pytest.param(
             "meet me at hammersmith bridge tonight",
             "CHARLES",
             "GD DO GD RQ AR KY GD HD NK PR DA MS OG UP GK IC QY",
+            id="pad last space",
         ),
-        (
+        pytest.param(
             "hide the gold in the tree stump",
             "PLAYFAIR EXAMPLE",
             "BM OD ZB XD NA BE KU DM UI XM MO UV IF",
+            id="full length",
         ),
     ],
 )

@@ -15,17 +15,34 @@ from codebook.transposition import adfgvx, rail_fence, scytale
         pytest.param(
             "we are discovered. run at once.", 3, "WECRUOERDSOEERNTNEAIVDAC", id="n=3"
         ),
+        pytest.param(
+            "we are discovered. run at once.", 6, "WVOEOETNACRACRSENEEIDUDR", id="n=6"
+        ),
     ],
 )
 def test_rail_fence(plaintext, n, expected):
     assert rail_fence(plaintext, n=n) == expected
 
 
-def test_scytale():
-    assert (
-        scytale("send more troops to southern flank and", diameter=4)
-        == "STSFEROLNOUADOTNMPHKOSEARTRNEOND"
-    )
+@pytest.mark.parametrize(
+    "plaintext, diameter, expected",
+    [
+        pytest.param(
+            "send more troops to southern flank and",
+            4,
+            "STSFEROLNOUADOTNMPHKOSEARTRNEOND",
+            id="mod=0",
+        ),
+        pytest.param(
+            "we are discovered. flee at once.",
+            3,
+            "WOEEVEAEARRTEEODDNIFCSLEC",
+            id="mod=1",
+        ),
+    ],
+)
+def test_scytale(plaintext, diameter, expected):
+    assert scytale(plaintext, diameter=diameter) == expected
 
 
 def test_adfgvx():

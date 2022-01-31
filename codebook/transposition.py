@@ -6,7 +6,6 @@ as well as the fractionating transposition cipher `adfgvx`.
 """
 import collections
 import itertools
-import math
 
 from codebook.utils import validate_key, validate_plaintext
 
@@ -26,7 +25,7 @@ def rail_fence(plaintext: str, *, n: int = 2) -> str:
     for i, c in zip(zigzag, filtered):
         rows[i] += c
 
-    return "".join(rows[i] for i in range(n))
+    return "".join(rows)
 
 
 def scytale(plaintext: str, *, diameter: int) -> str:
@@ -39,8 +38,19 @@ def scytale(plaintext: str, *, diameter: int) -> str:
 
     filtered = [c for c in plaintext.upper() if c.isalpha()]
 
-    cols = math.ceil(len(filtered) / diameter)
-    return "".join(["".join(filtered[i::cols]) for i in range(cols)])
+    d, m = divmod(len(filtered), diameter)
+    rows = []
+    for i in range(diameter):
+        offset = i if m > i else m
+        start = i * d + offset
+        end = start + d + m - offset
+        rows.append(filtered[start:end])
+
+    seq = []
+    for t in itertools.zip_longest(*rows):
+        seq.append("".join(c or "" for c in t))
+
+    return "".join(seq)
 
 
 def adfgvx(plaintext: str, *, key: str) -> str:

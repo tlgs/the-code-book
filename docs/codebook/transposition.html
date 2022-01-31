@@ -53,10 +53,21 @@
                     <h1 class="modulename">
 <a href="./../codebook.html">codebook</a><wbr>.transposition    </h1>
 
+                        <div class="docstring"><p>This module defines a number of classical transposition ciphers.</p>
+
+<p>It features simple ciphers like the <code><a href="#rail_fence">rail_fence</a></code> and the <code><a href="#scytale">scytale</a></code>,
+as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx</a></code>.</p>
+</div>
 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines a number of classical transposition ciphers.</span>
+
+<span class="sd">It features simple ciphers like the `rail_fence` and the `scytale`,</span>
+<span class="sd">as well as the fractionating transposition cipher `adfgvx`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -64,7 +75,11 @@
 
 
 <span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Rail Fence cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `n` is the number of rails to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -73,7 +88,11 @@
 
 
 <span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Scytale cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `diameter` is the number of letters that *can fit around the rod&#39;s circumference*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -83,7 +102,25 @@
 
 
 <span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ADFGVX cipher; page 374&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` is the keyword or keyphrase used for the transposition stage of the cipher</span>
+
+<span class="sd">    For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol</span>
+<span class="sd">    alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition</span>
+<span class="sd">    stage.</span>
+<span class="sd">    For simplicity, the grid&#39;s values are hardcoded with book&#39;s example:</span>
+
+<span class="sd">    |       | **A** | **D** | **F** | **G** | **V** | **X** |</span>
+<span class="sd">    | ----- | ----- | ----- | ----- | ----- | ----- | ----- |</span>
+<span class="sd">    | **A** |   8   |   p   |   3   |   d   |   1   |   n   |</span>
+<span class="sd">    | **D** |   l   |   t   |   4   |   o   |   a   |   h   |</span>
+<span class="sd">    | **F** |   7   |   k   |   b   |   c   |   5   |   z   |</span>
+<span class="sd">    | **G** |   j   |   u   |   6   |   w   |   g   |   m   |</span>
+<span class="sd">    | **V** |   x   |   s   |   v   |   i   |   r   |   2   |</span>
+<span class="sd">    | **X** |   9   |   e   |   y   |   0   |   f   |   q   |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -116,7 +153,11 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Rail Fence cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `n` is the number of rails to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -126,7 +167,12 @@
 
         </details>
 
-            <div class="docstring"><p>Rail Fence cipher; page 8</p>
+            <div class="docstring"><p>Rail Fence cipher (page 8)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>n</code> is the number of rails to use</li>
+</ul>
 </div>
 
 
@@ -142,7 +188,11 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Scytale cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `diameter` is the number of letters that *can fit around the rod&#39;s circumference*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -153,7 +203,12 @@
 
         </details>
 
-            <div class="docstring"><p>Scytale cipher; page 8</p>
+            <div class="docstring"><p>Scytale cipher (page 8)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>diameter</code> is the number of letters that <em>can fit around the rod's circumference</em></li>
+</ul>
 </div>
 
 
@@ -169,7 +224,25 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ADFGVX cipher; page 374&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` is the keyword or keyphrase used for the transposition stage of the cipher</span>
+
+<span class="sd">    For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol</span>
+<span class="sd">    alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition</span>
+<span class="sd">    stage.</span>
+<span class="sd">    For simplicity, the grid&#39;s values are hardcoded with book&#39;s example:</span>
+
+<span class="sd">    |       | **A** | **D** | **F** | **G** | **V** | **X** |</span>
+<span class="sd">    | ----- | ----- | ----- | ----- | ----- | ----- | ----- |</span>
+<span class="sd">    | **A** |   8   |   p   |   3   |   d   |   1   |   n   |</span>
+<span class="sd">    | **D** |   l   |   t   |   4   |   o   |   a   |   h   |</span>
+<span class="sd">    | **F** |   7   |   k   |   b   |   c   |   5   |   z   |</span>
+<span class="sd">    | **G** |   j   |   u   |   6   |   w   |   g   |   m   |</span>
+<span class="sd">    | **V** |   x   |   s   |   v   |   i   |   r   |   2   |</span>
+<span class="sd">    | **X** |   9   |   e   |   y   |   0   |   f   |   q   |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -190,7 +263,87 @@
 
         </details>
 
-            <div class="docstring"><p>ADFGVX cipher; page 374</p>
+            <div class="docstring"><p>ADFGVX cipher (Appendix F, page 374)</p>
+
+<ul>
+<li><code>plaintext</code> is the message to be encrypted</li>
+<li><code>key</code> is the keyword or keyphrase used for the transposition stage of the cipher</li>
+</ul>
+
+<p>For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol
+alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition
+stage.
+For simplicity, the grid's values are hardcoded with book's example:</p>
+
+<table>
+<thead>
+<tr>
+  <th></th>
+  <th><strong>A</strong></th>
+  <th><strong>D</strong></th>
+  <th><strong>F</strong></th>
+  <th><strong>G</strong></th>
+  <th><strong>V</strong></th>
+  <th><strong>X</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>A</strong></td>
+  <td>8</td>
+  <td>p</td>
+  <td>3</td>
+  <td>d</td>
+  <td>1</td>
+  <td>n</td>
+</tr>
+<tr>
+  <td><strong>D</strong></td>
+  <td>l</td>
+  <td>t</td>
+  <td>4</td>
+  <td>o</td>
+  <td>a</td>
+  <td>h</td>
+</tr>
+<tr>
+  <td><strong>F</strong></td>
+  <td>7</td>
+  <td>k</td>
+  <td>b</td>
+  <td>c</td>
+  <td>5</td>
+  <td>z</td>
+</tr>
+<tr>
+  <td><strong>G</strong></td>
+  <td>j</td>
+  <td>u</td>
+  <td>6</td>
+  <td>w</td>
+  <td>g</td>
+  <td>m</td>
+</tr>
+<tr>
+  <td><strong>V</strong></td>
+  <td>x</td>
+  <td>s</td>
+  <td>v</td>
+  <td>i</td>
+  <td>r</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td><strong>X</strong></td>
+  <td>9</td>
+  <td>e</td>
+  <td>y</td>
+  <td>0</td>
+  <td>f</td>
+  <td>q</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

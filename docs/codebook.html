@@ -69,7 +69,13 @@ codebook    </h1>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines a number of classical transposition ciphers.</span>
+
+<span class="sd">It features simple ciphers like the `rail_fence` and the `scytale`,</span>
+<span class="sd">as well as the fractionating transposition cipher `adfgvx`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -77,7 +83,11 @@ codebook    </h1>
 
 
 <span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Rail Fence cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `n` is the number of rails to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -86,7 +96,11 @@ codebook    </h1>
 
 
 <span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Scytale cipher; page 8&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `diameter` is the number of letters that *can fit around the rod&#39;s circumference*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
 
     <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()]</span>
@@ -96,7 +110,25 @@ codebook    </h1>
 
 
 <span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ADFGVX cipher; page 374&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
+
+<span class="sd">    - `plaintext` is the message to be encrypted</span>
+<span class="sd">    - `key` is the keyword or keyphrase used for the transposition stage of the cipher</span>
+
+<span class="sd">    For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol</span>
+<span class="sd">    alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition</span>
+<span class="sd">    stage.</span>
+<span class="sd">    For simplicity, the grid&#39;s values are hardcoded with book&#39;s example:</span>
+
+<span class="sd">    |       | **A** | **D** | **F** | **G** | **V** | **X** |</span>
+<span class="sd">    | ----- | ----- | ----- | ----- | ----- | ----- | ----- |</span>
+<span class="sd">    | **A** |   8   |   p   |   3   |   d   |   1   |   n   |</span>
+<span class="sd">    | **D** |   l   |   t   |   4   |   o   |   a   |   h   |</span>
+<span class="sd">    | **F** |   7   |   k   |   b   |   c   |   5   |   z   |</span>
+<span class="sd">    | **G** |   j   |   u   |   6   |   w   |   g   |   m   |</span>
+<span class="sd">    | **V** |   x   |   s   |   v   |   i   |   r   |   2   |</span>
+<span class="sd">    | **X** |   9   |   e   |   y   |   0   |   f   |   q   |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
@@ -117,6 +149,11 @@ codebook    </h1>
 
         </details>
 
+            <div class="docstring"><p>This module defines a number of classical transposition ciphers.</p>
+
+<p>It features simple ciphers like the <code>rail_fence</code> and the <code>scytale</code>,
+as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
+</div>
 
 
                 </section>
@@ -351,8 +388,8 @@ codebook    </h1>
 <span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
 
 <span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
-<span class="sd">    usage of a padding scheme.</span>
-<span class="sd">    This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</span>
+<span class="sd">    usage of a padding scheme; this implementation employs the PKCS1 v1.5</span>
+<span class="sd">    encryption operation as defined in RFC 8017.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>

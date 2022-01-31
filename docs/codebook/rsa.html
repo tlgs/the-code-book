@@ -107,8 +107,8 @@ This solution focuses solely on the <strong>encryption</strong> stage.</p>
 <span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
 
 <span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
-<span class="sd">    usage of a padding scheme.</span>
-<span class="sd">    This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</span>
+<span class="sd">    usage of a padding scheme; this implementation employs the PKCS1 v1.5</span>
+<span class="sd">    encryption operation as defined in RFC 8017.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
@@ -135,8 +135,8 @@ This solution focuses solely on the <strong>encryption</strong> stage.</p>
 <span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
 
 <span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
-<span class="sd">    usage of a padding scheme.</span>
-<span class="sd">    This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</span>
+<span class="sd">    usage of a padding scheme; this implementation employs the PKCS1 v1.5</span>
+<span class="sd">    encryption operation as defined in RFC 8017.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
@@ -153,8 +153,8 @@ This solution focuses solely on the <strong>encryption</strong> stage.</p>
 </ul>
 
 <p>Unlike the example in the book, practical applications of RSA require the
-usage of a padding scheme.
-This implementation employs the PKCS1 v1.5 encryption operation as defined in RFC 8017.</p>
+usage of a padding scheme; this implementation employs the PKCS1 v1.5
+encryption operation as defined in RFC 8017.</p>
 </div>
 
 

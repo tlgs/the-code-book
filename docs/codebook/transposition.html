@@ -70,10 +70,11 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
+<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">codegroup</span><span class="p">,</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
 
 
-<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -89,6 +90,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
 
@@ -112,6 +114,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
 
@@ -147,7 +150,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
         <span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -156,14 +159,16 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
                 <section id="rail_fence">
                             <div class="attr function"><a class="headerlink" href="#rail_fence">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
-            <span class="name">rail_fence</span><span class="signature">(plaintext: str, *, n: int = 2) -&gt; str</span>:
+            <span class="name">rail_fence</span><span class="signature">(plaintext: str, *, n: int) -&gt; str</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -194,6 +199,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
                 <section id="scytale">
                             <div class="attr function"><a class="headerlink" href="#scytale">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">scytale</span><span class="signature">(plaintext: str, *, diameter: int) -&gt; str</span>:
@@ -201,7 +207,8 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -239,6 +246,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
                 <section id="adfgvx">
                             <div class="attr function"><a class="headerlink" href="#adfgvx">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">adfgvx</span><span class="signature">(plaintext: str, *, key: str) -&gt; str</span>:
@@ -246,7 +254,8 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -281,7 +290,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
         <span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 
         </details>

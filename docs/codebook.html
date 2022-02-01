@@ -78,10 +78,11 @@ codebook    </h1>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
+<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">codegroup</span><span class="p">,</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
 
 
-<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -97,6 +98,7 @@ codebook    </h1>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
 
@@ -120,6 +122,7 @@ codebook    </h1>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
 
@@ -155,7 +158,7 @@ codebook    </h1>
         <span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -186,7 +189,12 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">ascii_uppercase</span>
 
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">validate_cipher_alphabet</span><span class="p">,</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
+<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">codegroup</span><span class="p">,</span>
+    <span class="n">validate_cipher_alphabet</span><span class="p">,</span>
+    <span class="n">validate_key</span><span class="p">,</span>
+    <span class="n">validate_plaintext</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_shifted_alphabet</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -205,6 +213,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
     <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
 
@@ -215,6 +224,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
     <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
 
@@ -229,6 +239,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
     <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
 
@@ -246,6 +257,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
     <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
 
@@ -263,6 +275,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
 
@@ -321,7 +334,7 @@ as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
 
         <span class="n">ciphertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 </pre></div>
 
         </details>

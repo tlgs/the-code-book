@@ -9,14 +9,20 @@ from codebook.transposition import adfgvx, rail_fence, scytale
         pytest.param(
             "thy secret is thy prisoner; if thou let it go, thou art a prisoner to it",
             2,
-            "TYERTSHPIOEITOLTTOHURARSNROTHSCEITYRSNRFHUEIGTOATPIOETI",
+            "TYERT SHPIO EITOL TTOHU RARSN ROTHS CEITY RSNRF HUEIG TOATP IOETI",
             id="n=2",
         ),
         pytest.param(
-            "we are discovered. run at once.", 3, "WECRUOERDSOEERNTNEAIVDAC", id="n=3"
+            "we are discovered. run at once.",
+            3,
+            "WECRU OERDS OEERN TNEAI VDAC",
+            id="n=3",
         ),
         pytest.param(
-            "we are discovered. run at once.", 6, "WVOEOETNACRACRSENEEIDUDR", id="n=6"
+            "we are discovered. run at once.",
+            6,
+            "WVOEO ETNAC RACRS ENEEI DUDR",
+            id="n=6",
         ),
     ],
 )
@@ -30,13 +36,13 @@ def test_rail_fence(plaintext, n, expected):
         pytest.param(
             "send more troops to southern flank and",
             4,
-            "STSFEROLNOUADOTNMPHKOSEARTRNEOND",
+            "STSFE ROLNO UADOT NMPHK OSEAR TRNEO ND",
             id="mod=0",
         ),
         pytest.param(
             "we are discovered. flee at once.",
             3,
-            "WOEEVEAEARRTEEODDNIFCSLEC",
+            "WOEEV EAEAR RTEEO DDNIF CSLEC",
             id="mod=1",
         ),
     ],
@@ -46,7 +52,4 @@ def test_scytale(plaintext, diameter, expected):
 
 
 def test_adfgvx():
-    assert (
-        adfgvx("attack at 10 pm", key="MARK")
-        == "V D G V V D D V D D G X D D F D A A D D F D X G"
-    )
+    assert adfgvx("attack at 10 pm", key="MARK") == "VDGVV DDVDD GXDDF DAADD FDXG"

@@ -84,7 +84,12 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">ascii_uppercase</span>
 
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">validate_cipher_alphabet</span><span class="p">,</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
+<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">codegroup</span><span class="p">,</span>
+    <span class="n">validate_cipher_alphabet</span><span class="p">,</span>
+    <span class="n">validate_key</span><span class="p">,</span>
+    <span class="n">validate_plaintext</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_shifted_alphabet</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -103,6 +108,7 @@
     <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
 
@@ -113,6 +119,7 @@
     <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
 
@@ -127,6 +134,7 @@
     <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
 
@@ -144,6 +152,7 @@
     <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
 
@@ -161,6 +170,7 @@
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 
 
+<span class="nd">@codegroup</span>
 <span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
 
@@ -219,7 +229,7 @@
 
         <span class="n">ciphertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -228,6 +238,7 @@
                 <section id="caesar">
                             <div class="attr function"><a class="headerlink" href="#caesar">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">caesar</span><span class="signature">(plaintext: str, *, shift: int) -&gt; str</span>:
@@ -235,7 +246,8 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -260,6 +272,7 @@
                 <section id="generic">
                             <div class="attr function"><a class="headerlink" href="#generic">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">generic</span><span class="signature">(plaintext: str, *, cipher_alphabet: str) -&gt; str</span>:
@@ -267,7 +280,8 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -296,6 +310,7 @@
                 <section id="keyphrase">
                             <div class="attr function"><a class="headerlink" href="#keyphrase">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">keyphrase</span><span class="signature">(plaintext: str, *, key: str) -&gt; str</span>:
@@ -303,7 +318,8 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -340,6 +356,7 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
                 <section id="vigenere">
                             <div class="attr function"><a class="headerlink" href="#vigenere">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">vigenere</span><span class="signature">(plaintext: str, *, key: str) -&gt; str</span>:
@@ -347,7 +364,8 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -379,6 +397,7 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
                 <section id="playfair">
                             <div class="attr function"><a class="headerlink" href="#playfair">#&nbsp;&nbsp</a>
 
+                <div class="decorator">@codegroup</div>
 
             <span class="def">def</span>
             <span class="name">playfair</span><span class="signature">(plaintext: str, *, key: str) -&gt; str</span>:
@@ -386,7 +405,8 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="nd">@codegroup</span>
+<span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
 
 <span class="sd">    - `plaintext` is the message to be encrypted</span>
@@ -444,7 +464,7 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
 
         <span class="n">ciphertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
 </pre></div>
 
         </details>

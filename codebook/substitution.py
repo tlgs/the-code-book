@@ -10,7 +10,12 @@ It features different types of substitution ciphers:
 import itertools
 from string import ascii_lowercase, ascii_uppercase
 
-from codebook.utils import validate_cipher_alphabet, validate_key, validate_plaintext
+from codebook.utils import (
+    codegroup,
+    validate_cipher_alphabet,
+    validate_key,
+    validate_plaintext,
+)
 
 
 def _shifted_alphabet(n: int) -> str:
@@ -29,6 +34,7 @@ def _keyed_alphabet(key: str, *, from_start: bool) -> str:
     return key + "".join(remaining)
 
 
+@codegroup
 def caesar(plaintext: str, *, shift: int) -> str:
     """Caesar cipher (page 10)
 
@@ -39,6 +45,7 @@ def caesar(plaintext: str, *, shift: int) -> str:
     return generic(plaintext, cipher_alphabet=alphabet)
 
 
+@codegroup
 def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     """Monoalphabetic substitution cipher (page 12)
 
@@ -53,6 +60,7 @@ def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     return plaintext.translate(mapping)
 
 
+@codegroup
 def keyphrase(plaintext: str, *, key: str) -> str:
     """Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)
 
@@ -70,6 +78,7 @@ def keyphrase(plaintext: str, *, key: str) -> str:
     return generic(plaintext, cipher_alphabet=alphabet)
 
 
+@codegroup
 def vigenere(plaintext: str, *, key: str) -> str:
     """Vigenère cipher (page 48)
 
@@ -87,6 +96,7 @@ def vigenere(plaintext: str, *, key: str) -> str:
     return "".join(ciphertext)
 
 
+@codegroup
 def playfair(plaintext: str, *, key: str) -> str:
     """Playfair cipher (Appendix E, page 372)
 
@@ -145,4 +155,4 @@ def playfair(plaintext: str, *, key: str) -> str:
 
         ciphertext.append(a + b)
 
-    return " ".join(ciphertext)
+    return "".join(ciphertext)

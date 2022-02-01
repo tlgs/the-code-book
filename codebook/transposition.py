@@ -7,10 +7,11 @@ as well as the fractionating transposition cipher `adfgvx`.
 import collections
 import itertools
 
-from codebook.utils import validate_key, validate_plaintext
+from codebook.utils import codegroup, validate_key, validate_plaintext
 
 
-def rail_fence(plaintext: str, *, n: int = 2) -> str:
+@codegroup
+def rail_fence(plaintext: str, *, n: int) -> str:
     """Rail Fence cipher (page 8)
 
     - `plaintext` is the message to be encrypted
@@ -26,6 +27,7 @@ def rail_fence(plaintext: str, *, n: int = 2) -> str:
     return "".join(rows).upper()
 
 
+@codegroup
 def scytale(plaintext: str, *, diameter: int) -> str:
     """Scytale cipher (page 8)
 
@@ -49,6 +51,7 @@ def scytale(plaintext: str, *, diameter: int) -> str:
     return "".join(seq).upper()
 
 
+@codegroup
 def adfgvx(plaintext: str, *, key: str) -> str:
     """ADFGVX cipher (Appendix F, page 374)
 
@@ -84,4 +87,4 @@ def adfgvx(plaintext: str, *, key: str) -> str:
         columns[k].append(c)
 
     result = itertools.chain(*[columns[k] for k in sorted(key)])
-    return " ".join(result)
+    return "".join(result)

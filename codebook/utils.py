@@ -1,4 +1,7 @@
+import functools
 import string
+import textwrap
+from typing import Callable
 
 
 def validate_plaintext(plaintext: str) -> str:
@@ -27,3 +30,12 @@ def validate_cipher_alphabet(cipher_alphabet: str) -> str:
         )
 
     return cipher_alphabet
+
+
+def codegroup(func: Callable[..., str]) -> Callable[..., str]:
+    @functools.wraps(func)
+    def wrapper(*args: str, **kwargs: str | int) -> str:
+        ret = func(*args, **kwargs)
+        return " ".join(textwrap.wrap(ret, 5))
+
+    return wrapper

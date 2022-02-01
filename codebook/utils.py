@@ -15,12 +15,12 @@ def validate_key(key: str) -> str:
     if not key.isupper():
         raise ValueError("key should be uppercase")
 
-    squoze = []
+    seq = []
     for c in filter(str.isalpha, key):
-        if c not in squoze:
-            squoze.append(c)
+        if c not in seq:
+            seq.append(c)
 
-    return "".join(squoze)
+    return "".join(seq)
 
 
 def validate_cipher_alphabet(cipher_alphabet: str) -> str:

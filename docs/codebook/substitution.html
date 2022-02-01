@@ -129,7 +129,7 @@
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="n">validate_cipher_alphabet</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">)</span>
 
-    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">)))</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 
@@ -166,8 +166,8 @@
         <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span>
     <span class="p">)</span>
 
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 
 
 <span class="nd">@codegroup</span>
@@ -212,7 +212,7 @@
         <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
 
     <span class="c1"># apply transfrom</span>
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">digraph</span> <span class="ow">in</span> <span class="n">digraphs</span><span class="p">:</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
         <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
@@ -227,9 +227,9 @@
             <span class="n">a</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span>
 
-        <span class="n">ciphertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -290,7 +290,7 @@
     <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
     <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="n">validate_cipher_alphabet</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">)</span>
 
-    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">)))</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 </pre></div>
@@ -378,8 +378,8 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
         <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span>
     <span class="p">)</span>
 
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 
         </details>
@@ -447,7 +447,7 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
         <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
 
     <span class="c1"># apply transfrom</span>
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">digraph</span> <span class="ow">in</span> <span class="n">digraphs</span><span class="p">:</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
         <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
@@ -462,9 +462,9 @@ and not <code>JULISCAERBDFGHKMNOPQTVWXYZ</code>, which is a common alternative.<
             <span class="n">a</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span>
 
-        <span class="n">ciphertext</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 
         </details>

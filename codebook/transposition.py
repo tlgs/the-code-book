@@ -19,12 +19,12 @@ def rail_fence(plaintext: str, *, n: int) -> str:
     """
     plaintext = validate_plaintext(plaintext)
 
-    rows = [""] * n
+    seq = [""] * n
     zigzag = itertools.cycle(itertools.chain(range(n - 1), range(n - 1, 0, -1)))
     for i, c in zip(zigzag, plaintext):
-        rows[i] += c
+        seq[i] += c
 
-    return "".join(rows).upper()
+    return "".join(seq).upper()
 
 
 @codegroup
@@ -86,5 +86,5 @@ def adfgvx(plaintext: str, *, key: str) -> str:
     for k, c in zip(itertools.cycle(key), stage_one):
         columns[k].append(c)
 
-    result = itertools.chain(*[columns[k] for k in sorted(key)])
-    return "".join(result)
+    seq = itertools.chain(*[columns[k] for k in sorted(key)])
+    return "".join(seq)

@@ -55,7 +55,7 @@ def generic(plaintext: str, *, cipher_alphabet: str) -> str:
     plaintext = validate_plaintext(plaintext)
     cipher_alphabet = validate_cipher_alphabet(cipher_alphabet)
 
-    mapping = str.maketrans(dict(zip(ascii_lowercase, cipher_alphabet)))
+    mapping = str.maketrans(ascii_lowercase, cipher_alphabet)
 
     return plaintext.translate(mapping)
 
@@ -92,8 +92,8 @@ def vigenere(plaintext: str, *, key: str) -> str:
         _shifted_alphabet(ord(c) - 65) for c in key
     )
 
-    ciphertext = [next(cycled_cipher_alphabet)[ord(c) - 97] for c in plaintext]
-    return "".join(ciphertext)
+    seq = [next(cycled_cipher_alphabet)[ord(c) - 97] for c in plaintext]
+    return "".join(seq)
 
 
 @codegroup
@@ -138,7 +138,7 @@ def playfair(plaintext: str, *, key: str) -> str:
         digraphs.append(plaintext[i] + "x")
 
     # apply transfrom
-    ciphertext = []
+    seq = []
     for digraph in digraphs:
         x, y = from_char[digraph[0].upper()]
         v, w = from_char[digraph[1].upper()]
@@ -153,6 +153,6 @@ def playfair(plaintext: str, *, key: str) -> str:
             a = to_char[v, y]
             b = to_char[x, w]
 
-        ciphertext.append(a + b)
+        seq.append(a + b)
 
-    return "".join(ciphertext)
+    return "".join(seq)

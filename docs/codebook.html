@@ -19,26 +19,19 @@
 
 
 
+                    <h2>Contents</h2>
+                    <ul>
+  <li><a href="#whats-this">What's this?</a></li>
+  <li><a href="#disclaimer">Disclaimer</a></li>
+</ul>
+
 
                     <h2>Submodules</h2>
                     <ul>
-                            <li><a href="codebook/transposition.html">codebook.transposition</a></li>
-                            <li><a href="codebook/substitution.html">codebook.substitution</a></li>
                             <li><a href="codebook/rsa.html">codebook.rsa</a></li>
+                            <li><a href="codebook/substitution.html">codebook.substitution</a></li>
+                            <li><a href="codebook/transposition.html">codebook.transposition</a></li>
                     </ul>
-
-                    <h2>API Documentation</h2>
-                        <ul class="memberlist">
-            <li>
-                    <a class="module" href="#transposition">transposition</a>
-            </li>
-            <li>
-                    <a class="module" href="#substitution">substitution</a>
-            </li>
-            <li>
-                    <a class="module" href="#rsa">rsa</a>
-            </li>
-    </ul>
 
 
 
@@ -54,380 +47,49 @@
                     <h1 class="modulename">
 codebook    </h1>
 
+                        <div class="docstring"><h2 id="whats-this">What's this?</h2>
+
+<p>This is a <em>code along</em> to Simon Singh's
+<a href="https://simonsingh.net/books/the-code-book/">The Code Book</a>
+(ISBN 978-1-85702-889-8).</p>
+
+<p>It implements every cipher that is described
+(and given <em>enough</em> attention) in the book.
+Only <strong>encryption operations</strong> are implemented.</p>
+
+<p>The package aims to provide a consistent API across all classical ciphers.</p>
+
+<h2 id="disclaimer">Disclaimer</h2>
+
+<p>This project is meant purely as an exercise to absorb the contents of the book.
+<strong>Should not be seen as a reference towards applying any cryptographic technique.</strong></p>
+</div>
 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;transposition&quot;</span><span class="p">,</span> <span class="s2">&quot;substitution&quot;</span><span class="p">,</span> <span class="s2">&quot;rsa&quot;</span><span class="p">]</span>
+            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">## What&#39;s this?</span>
+
+<span class="sd">This is a *code along* to Simon Singh&#39;s</span>
+<span class="sd">[The Code Book](https://simonsingh.net/books/the-code-book/)</span>
+<span class="sd">(ISBN 978-1-85702-889-8).</span>
+
+<span class="sd">It implements every cipher that is described</span>
+<span class="sd">(and given *enough* attention) in the book.</span>
+<span class="sd">Only **encryption operations** are implemented.</span>
+
+<span class="sd">The package aims to provide a consistent API across all classical ciphers.</span>
+
+<span class="sd">## Disclaimer</span>
+
+<span class="sd">This project is meant purely as an exercise to absorb the contents of the book.</span>
+<span class="sd">**Should not be seen as a reference towards applying any cryptographic technique.**</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
         </details>
 
             </section>
-                <section id="transposition">
-                                <div class="attr module"><a class="headerlink" href="#transposition">#&nbsp;&nbsp</a>
-<span class="name"><a href="codebook/transposition.html">codebook.transposition</a></span></div>
-
-                <details>
-            <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module defines a number of classical transposition ciphers.</span>
-
-<span class="sd">It features simple ciphers like the `rail_fence` and the `scytale`,</span>
-<span class="sd">as well as the fractionating transposition cipher `adfgvx`.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="n">codegroup</span><span class="p">,</span> <span class="n">validate_key</span><span class="p">,</span> <span class="n">validate_plaintext</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">rail_fence</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Rail Fence cipher (page 8)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `n` is the number of rails to use</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-
-    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-    <span class="n">zigzag</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">zigzag</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
-        <span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span>
-
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">scytale</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Scytale cipher (page 8)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `diameter` is the number of letters that *can fit around the rod&#39;s circumference*</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-
-    <span class="n">d</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">),</span> <span class="n">diameter</span><span class="p">)</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">diameter</span><span class="p">):</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="n">i</span> <span class="k">else</span> <span class="n">m</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">d</span> <span class="o">+</span> <span class="n">offset</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">m</span> <span class="o">-</span> <span class="n">offset</span>
-        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
-
-    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">zip_longest</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">):</span>
-        <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">t</span><span class="p">))</span>
-
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">adfgvx</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;ADFGVX cipher (Appendix F, page 374)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `key` is the keyword or keyphrase used for the transposition stage of the cipher</span>
-
-<span class="sd">    For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol</span>
-<span class="sd">    alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition</span>
-<span class="sd">    stage.</span>
-<span class="sd">    For simplicity, the grid&#39;s values are hardcoded with book&#39;s example:</span>
-
-<span class="sd">    |       | **A** | **D** | **F** | **G** | **V** | **X** |</span>
-<span class="sd">    | ----- | ----- | ----- | ----- | ----- | ----- | ----- |</span>
-<span class="sd">    | **A** |   8   |   p   |   3   |   d   |   1   |   n   |</span>
-<span class="sd">    | **D** |   l   |   t   |   4   |   o   |   a   |   h   |</span>
-<span class="sd">    | **F** |   7   |   k   |   b   |   c   |   5   |   z   |</span>
-<span class="sd">    | **G** |   j   |   u   |   6   |   w   |   g   |   m   |</span>
-<span class="sd">    | **V** |   x   |   s   |   v   |   i   |   r   |   2   |</span>
-<span class="sd">    | **X** |   9   |   e   |   y   |   0   |   f   |   q   |</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="n">lookup</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="s2">&quot;8p3d1nlt4oah7kbc5zju6wgmxsvir29ey0fq&quot;</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">6</span><span class="p">,</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">6</span>
-        <span class="n">lookup</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-
-    <span class="n">stage_one</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lookup</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isalnum</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">))</span>
-
-    <span class="n">columns</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">stage_one</span><span class="p">):</span>
-        <span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-
-    <span class="n">seq</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</pre></div>
-
-        </details>
-
-            <div class="docstring"><p>This module defines a number of classical transposition ciphers.</p>
-
-<p>It features simple ciphers like the <code>rail_fence</code> and the <code>scytale</code>,
-as well as the fractionating transposition cipher <code>adfgvx</code>.</p>
-</div>
-
-
-                </section>
-                <section id="substitution">
-                                <div class="attr module"><a class="headerlink" href="#substitution">#&nbsp;&nbsp</a>
-<span class="name"><a href="codebook/substitution.html">codebook.substitution</a></span></div>
-
-                <details>
-            <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module defines a number of classical substitution ciphers.</span>
-
-<span class="sd">It features different types of substitution ciphers:</span>
-
-<span class="sd">  - Monoalphabetic: `caesar`, `generic`, `keyphrase`</span>
-<span class="sd">  - Polyalphabetic: `vigenere`</span>
-<span class="sd">  - Polygraphic: `playfair`</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">ascii_uppercase</span>
-
-<span class="kn">from</span> <span class="nn">codebook.utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">codegroup</span><span class="p">,</span>
-    <span class="n">validate_cipher_alphabet</span><span class="p">,</span>
-    <span class="n">validate_key</span><span class="p">,</span>
-    <span class="n">validate_plaintext</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_shifted_alphabet</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">ascii_uppercase</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">+</span> <span class="n">ascii_uppercase</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">_keyed_alphabet</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">from_start</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">from_start</span><span class="p">:</span>
-        <span class="n">remaining</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ascii_uppercase</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">65</span>
-        <span class="n">remaining</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">caesar</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Caesar cipher (page 10)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `shift` is the number of places to rotate the plain alphabet (right shift)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="n">shift</span> <span class="o">%</span> <span class="mi">26</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher (page 12)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `cipher_alphabet` is the cipher alphabet that represents the substitution</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-    <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="n">validate_cipher_alphabet</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">)</span>
-
-    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">keyphrase</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Monoalphabetic substitution cipher using a keyword/keyphrase (page 13)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `key` is the keyword or keyphrase used to generate the cipher alphabet</span>
-
-<span class="sd">    As per the example in the book, the remainder of the alphabet starts</span>
-<span class="sd">    where the keyphrase ends.</span>
-<span class="sd">    For example, `JULIUS CAESAR` generates the `JULISCAERTVWXYZBDFGHKMNOPQ` alphabet</span>
-<span class="sd">    and not `JULISCAERBDFGHKMNOPQTVWXYZ`, which is a common alternative.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="n">alphabet</span> <span class="o">=</span> <span class="n">_keyed_alphabet</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">generic</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">cipher_alphabet</span><span class="o">=</span><span class="n">alphabet</span><span class="p">)</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Vigenère cipher (page 48)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `key` defines the series of interwoven Caesar ciphers to be used</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="n">cycled_cipher_alphabet</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span>
-        <span class="n">_shifted_alphabet</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">65</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span>
-    <span class="p">)</span>
-
-    <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">cycled_cipher_alphabet</span><span class="p">)[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mi">97</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-
-
-<span class="nd">@codegroup</span>
-<span class="k">def</span> <span class="nf">playfair</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Playfair cipher (Appendix E, page 372)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `key` defines the 5x5 table used for encryption</span>
-
-<span class="sd">    As per the example in the book, `J` and `I` share a space on the table</span>
-<span class="sd">    and `x` is used as padding for *same-letter* digrams and for the *last space*,</span>
-<span class="sd">    if required.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">validate_plaintext</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="c1"># build matrix</span>
-    <span class="n">cipher_alphabet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_keyed_alphabet</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">from_start</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="n">cipher_alphabet</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;J&quot;</span><span class="p">)</span>
-
-    <span class="n">from_char</span><span class="p">,</span> <span class="n">to_char</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cipher_alphabet</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">5</span><span class="p">,</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
-        <span class="n">from_char</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
-
-    <span class="n">from_char</span><span class="p">[</span><span class="s2">&quot;J&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">]</span>
-
-    <span class="c1"># collect digraphs</span>
-    <span class="n">digraphs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
-            <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):</span>
-        <span class="n">digraphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
-
-    <span class="c1"># apply transfrom</span>
-    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">digraph</span> <span class="ow">in</span> <span class="n">digraphs</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
-        <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">from_char</span><span class="p">[</span><span class="n">digraph</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
-
-        <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">w</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[(</span><span class="n">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="n">v</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">to_char</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">]</span>
-
-        <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-</pre></div>
-
-        </details>
-
-            <div class="docstring"><p>This module defines a number of classical substitution ciphers.</p>
-
-<p>It features different types of substitution ciphers:</p>
-
-<ul>
-<li>Monoalphabetic: <code>caesar</code>, <code>generic</code>, <code>keyphrase</code></li>
-<li>Polyalphabetic: <code>vigenere</code></li>
-<li>Polygraphic: <code>playfair</code></li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="rsa">
-                                <div class="attr module"><a class="headerlink" href="#rsa">#&nbsp;&nbsp</a>
-<span class="name"><a href="codebook/rsa.html">codebook.rsa</a></span></div>
-
-                <details>
-            <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module defines the RSA public-key algorithm.</span>
-
-<span class="sd">The RSA cryptosystem involves multiple steps:</span>
-<span class="sd">key generation, key distribution, encryption, and decryption.</span>
-<span class="sd">This solution focuses solely on the **encryption** stage.</span>
-
-<span class="sd">It implements the encryption operation using the PKCS1 v1.5 padding scheme.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">secrets</span>
-
-
-<span class="k">def</span> <span class="nf">_pkcs1v15</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;RSAES-PKCS1-V1_5 encryption operation</span>
-
-<span class="sd">    - `n` is the public modulus</span>
-<span class="sd">    - `e` is the public exponent</span>
-<span class="sd">    - `M` is the message to be encrypted - an octet string</span>
-
-<span class="sd">    See:</span>
-<span class="sd">      - &lt;https://datatracker.ietf.org/doc/html/rfc8017#section-7.2&gt;</span>
-<span class="sd">      - &lt;https://stackoverflow.com/q/70910756/5818220&gt;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="c1"># Length checking</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">11</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;message too long&quot;</span><span class="p">)</span>
-
-    <span class="c1"># EME-PKCS1-v1_5 encoding</span>
-    <span class="n">PS</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">randbelow</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="p">))</span>
-    <span class="n">EM</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00\x02</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">PS</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">M</span>
-
-    <span class="c1"># RSA encryption</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">EM</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">C</span>
-
-
-<span class="k">def</span> <span class="nf">rsa</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;RSA public-key algorithm (Appendix J, page 379)</span>
-
-<span class="sd">    - `plaintext` is the message to be encrypted</span>
-<span class="sd">    - `public_key` is the tuple `(n, e)` consisting of the public modulus and exponent</span>
-
-<span class="sd">    Unlike the example in the book, practical applications of RSA require the</span>
-<span class="sd">    usage of a padding scheme; this implementation employs the PKCS1 v1.5</span>
-<span class="sd">    encryption operation as defined in RFC 8017.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">_pkcs1v15</span><span class="p">(</span><span class="o">*</span><span class="n">public_key</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-</pre></div>
-
-        </details>
-
-            <div class="docstring"><p>This module defines the RSA public-key algorithm.</p>
-
-<p>The RSA cryptosystem involves multiple steps:
-key generation, key distribution, encryption, and decryption.
-This solution focuses solely on the <strong>encryption</strong> stage.</p>
-
-<p>It implements the encryption operation using the PKCS1 v1.5 padding scheme.</p>
-</div>
-
-
-                </section>
     </main>
 </body>
 </html>

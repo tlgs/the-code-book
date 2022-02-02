@@ -140,7 +140,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
 
     <span class="n">lookup</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="s2">&quot;8p3d1nlt4oah7kbc5zju6wgmxsvir29ey0fq&quot;</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">6</span><span class="p">,</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">6</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="n">lookup</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
 
     <span class="n">stage_one</span> <span class="o">=</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
@@ -280,7 +280,7 @@ as well as the fractionating transposition cipher <code><a href="#adfgvx">adfgvx
 
     <span class="n">lookup</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="s2">&quot;8p3d1nlt4oah7kbc5zju6wgmxsvir29ey0fq&quot;</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">6</span><span class="p">,</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">6</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="n">lookup</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;ADFGVX&quot;</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
 
     <span class="n">stage_one</span> <span class="o">=</span> <span class="n">plaintext</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>

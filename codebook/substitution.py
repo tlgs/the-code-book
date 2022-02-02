@@ -116,7 +116,7 @@ def playfair(plaintext: str, *, key: str) -> str:
 
     from_char, to_char = {}, {}
     for i, c in enumerate(cipher_alphabet):
-        x, y = (i % 5, i // 5)
+        y, x = divmod(i, 5)
         from_char[c] = (x, y)
         to_char[x, y] = c
 

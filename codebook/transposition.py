@@ -77,7 +77,7 @@ def adfgvx(plaintext: str, *, key: str) -> str:
 
     lookup = {}
     for i, c in enumerate("8p3d1nlt4oah7kbc5zju6wgmxsvir29ey0fq"):
-        x, y = i % 6, i // 6
+        y, x = divmod(i, 6)
         lookup[ord(c)] = "ADFGVX"[y] + "ADFGVX"[x]
 
     stage_one = plaintext.translate(lookup)

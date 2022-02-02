@@ -8,7 +8,7 @@ Only **encryption operations** are implemented.
 
 ## Motivation
 
-- implement simple cryptographic primitives using standard Python
+- implement cryptographic primitives using standard Python
 - mess around with [pytest](https://docs.pytest.org/)/[coverage](https://coverage.readthedocs.io)
   to power a _test-first_ development cycle
 - design a Python package with a sensible API (complete with lightweight documentation)

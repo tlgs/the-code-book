@@ -16,3 +16,4 @@ The package aims to provide a consistent API across all classical ciphers.
 This project is meant purely as an exercise to absorb the contents of the book.
 **Should not be seen as a reference towards applying any cryptographic technique.**
 """
+__all__ = ["transposition", "substitution", "rsa"]

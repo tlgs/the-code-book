@@ -58,9 +58,8 @@ def adfgvx(plaintext: str, *, key: str) -> str:
     - `plaintext` is the message to be encrypted
     - `key` is the keyword or keyphrase used for the transposition stage of the cipher
 
-    For practical purposes, the ADFGVX cipher uses two different keys: a 36 symbol
-    alphabet to encode the 6x6 grid, and a keyword/keyphrase for the transposition
-    stage.
+    The ADFGVX cipher uses two different keys: a 36 symbol alphabet to encode
+    the 6x6 grid, and a keyword/keyphrase for the transposition stage.
     For simplicity, the grid's values are hardcoded with the book's example:
 
     |       | **A** | **D** | **F** | **G** | **V** | **X** |

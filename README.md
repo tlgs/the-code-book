@@ -13,6 +13,12 @@ Only **encryption operations** are implemented.
   to power a _test-first_ development cycle
 - design a Python package with a sensible API (complete with lightweight documentation)
 
+## Development notes
+
+Install and setup project with `pip install -e .[dev]` and `pre-commit install`.
+Run tests with `coverage run` and inspect results with `coverage report`.
+Generate documentation with `pdoc -o docs --no-search codebook`.
+
 ## Disclaimer
 
 This project is meant purely as an exercise to absorb the contents of the book.

@@ -15,9 +15,9 @@ Only **encryption operations** are implemented.
 
 ## Development notes
 
-Install and setup project with `pip install -e .[dev]` and `pre-commit install`.
-Run tests with `coverage run` and inspect results with `coverage report`.
-Generate documentation with `pdoc -o docs --no-search codebook`.
+- install and setup project with `pip install -e .[dev]` and `pre-commit install`
+- run tests with `coverage run` and inspect results with `coverage report`
+- generate documentation with `pdoc -o docs --no-search codebook`
 
 ## Disclaimer
 

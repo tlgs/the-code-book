@@ -1,10 +1,38 @@
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+[project]
+name = "codebook"
+version = "0.1.0"
+description = "Code along to Simon Singh's The Code Book"
+readme = "README.md"
+license = "Unlicense"
+authors = [
+  { name = "Tiago Seabra", email = "tlgs@users.noreply.github.com" },
+]
+classifiers = [
+  "License :: OSI Approved :: The Unlicense (Unlicense)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+urls = { Homepage = "https://github.com/tlgs/the-code-book" }
+
+[project.optional-dependencies]
+dev = [
+  "coverage[toml]",
+  "cryptography",
+  "pdoc",
+  "pre-commit",
+  "pytest",
+]
+
 
 [tool.coverage]
-run.branch = true
 run.command_line = "-m pytest -v"
+run.branch = true
 run.omit = ["tests/*"]
 
 report.show_missing = true
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

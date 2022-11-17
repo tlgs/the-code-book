@@ -13,7 +13,7 @@ Only **encryption operations** are implemented.
   to power a _test-first_ development cycle
 - design a Python package with a sensible API (complete with lightweight documentation)
 
-## Development notes
+## Development
 
 - install and setup project with `pip install -e .[dev]` and `pre-commit install`
 - run tests with `coverage run` and inspect results with `coverage report`

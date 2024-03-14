@@ -2,17 +2,14 @@
 name = "codebook"
 version = "0.1.0"
 description = "Code along to Simon Singh's The Code Book"
-readme = "README.md"
-license = "Unlicense"
 authors = [
   { name = "Tiago Seabra", email = "tlgs@users.noreply.github.com" },
 ]
 classifiers = [
-  "License :: OSI Approved :: The Unlicense (Unlicense)",
+  "License :: OSI Approved :: Zero-Clause BSD (0BSD)",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
 ]
-
 urls = { Homepage = "https://github.com/tlgs/the-code-book" }
 
 [project.optional-dependencies]
